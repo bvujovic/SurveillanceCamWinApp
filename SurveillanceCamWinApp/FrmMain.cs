@@ -18,6 +18,31 @@ namespace SurveillanceCamWinApp
             InitializeComponent();
         }
 
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                AppData.LoadAppData();
+
+                if (AppData.RootImageFolder == null)
+                    btnImagesFolderBrowse.PerformClick();
+                else
+                    txtRootImageFolder.Text = AppData.RootImageFolder;
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                AppData.SaveAppData();
+
+
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
         private async void BtnDL1pic_Click(object sender, EventArgs e)
         {
             try
@@ -25,10 +50,7 @@ namespace SurveillanceCamWinApp
                 var testUrl = "https://github.com/bvujovic/SurveillanceCam/blob/master/data/webcam.png?raw=true";
                 await DownloadImageAsync(testUrl);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         /// <see cref="https://stackoverflow.com/questions/24797485/how-to-download-image-from-url"/>
@@ -47,13 +69,19 @@ namespace SurveillanceCamWinApp
                 var dialog = new FolderBrowserDialog { RootFolder = Environment.SpecialFolder.MyComputer };
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    AppData.RootImageFolder = dialog.SelectedPath;
+                    txtRootImageFolder.Text = AppData.RootImageFolder = dialog.SelectedPath;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private void BtnRootImageFolderGoTo_Click(object sender, EventArgs e)
+        {
+            try
             {
-                MessageBox.Show(ex.Message);
+                System.Diagnostics.Process.Start(AppData.RootImageFolder);
             }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
     }
 }

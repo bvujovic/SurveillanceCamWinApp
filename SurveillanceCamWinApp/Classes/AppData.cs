@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SurveillanceCamWinApp.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,30 @@ namespace SurveillanceCamWinApp.Classes
             set { rootImageFolder = value; } //TODO ovde ubaciti neku validaciju i copy/move sadrzaja foldera
         }
 
+        public static void LoadAppData()
+        {
+            using (var db = new Data.DbCtx())
+            {
+                var appSettings = db.AppSettings.ToList();
+                RootImageFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder))?.Value;
+                //if(RootImageFolder == null)
+                //    RootImageFolder = 
+            }
+        }
+
+        public static void SaveAppData()
+        {
+            using (var db = new Data.DbCtx())
+            {
+                var appSettings = db.AppSettings.ToList();
+                var rootImgFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder));
+                if (rootImgFolder == null)
+                    db.AppSettings.Add(new AppSetting(nameof(RootImageFolder), RootImageFolder));
+                else
+                    rootImgFolder.Value = RootImageFolder;
+
+                db.SaveChanges();
+            }
+        }
     }
 }
