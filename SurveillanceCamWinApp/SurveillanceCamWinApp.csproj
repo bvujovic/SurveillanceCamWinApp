@@ -162,23 +162,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AppData.cs" />
+    <Compile Include="Classes\Enums.cs" />
+    <Compile Include="Classes\Logger.cs" />
+    <Compile Include="Classes\Utils.cs" />
+    <Compile Include="Data\Models\Camera.cs" />
     <Compile Include="Data\DbCtx.cs" />
     <Compile Include="Data\Models\AppSetting.cs" />
-    <Compile Include="FrmMain.cs">
+    <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmMain.Designer.cs">
+    <Compile Include="Forms\FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmNewCamera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmNewCamera.Designer.cs">
+      <DependentUpon>FrmNewCamera.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\20210814010039_InitialCreate.cs" />
     <Compile Include="Migrations\20210814010039_InitialCreate.designer.cs">
       <DependentUpon>20210814010039_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20210820054602_AddCameras.cs" />
+    <Compile Include="Migrations\20210820054602_AddCameras.designer.cs">
+      <DependentUpon>20210820054602_AddCameras.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DbCtxModelSnapshot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FrmMain.resx">
+    <EmbeddedResource Include="Forms\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmNewCamera.resx">
+      <DependentUpon>FrmNewCamera.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

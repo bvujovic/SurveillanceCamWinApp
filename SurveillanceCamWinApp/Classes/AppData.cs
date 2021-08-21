@@ -20,6 +20,8 @@ namespace SurveillanceCamWinApp.Classes
             set { rootImageFolder = value; } //TODO ovde ubaciti neku validaciju i copy/move sadrzaja foldera
         }
 
+        public static List<Camera> Cameras { get; private set; } = new List<Camera>();
+
         public static void LoadAppData()
         {
             using (var db = new Data.DbCtx())
@@ -28,6 +30,7 @@ namespace SurveillanceCamWinApp.Classes
                 RootImageFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder))?.Value;
                 //if(RootImageFolder == null)
                 //    RootImageFolder = 
+                Cameras = db.Cameras.ToList();
             }
         }
 
@@ -36,11 +39,14 @@ namespace SurveillanceCamWinApp.Classes
             using (var db = new Data.DbCtx())
             {
                 var appSettings = db.AppSettings.ToList();
-                var rootImgFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder));
-                if (rootImgFolder == null)
-                    db.AppSettings.Add(new AppSetting(nameof(RootImageFolder), RootImageFolder));
-                else
-                    rootImgFolder.Value = RootImageFolder;
+                if (RootImageFolder != null)
+                {
+                    var rootImgFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder));
+                    if (rootImgFolder == null)
+                        db.AppSettings.Add(new AppSetting(nameof(RootImageFolder), RootImageFolder));
+                    else
+                        rootImgFolder.Value = RootImageFolder;
+                }
 
                 db.SaveChanges();
             }

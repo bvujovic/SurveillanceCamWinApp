@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SurveillanceCamWinApp.Data.Models
 {
     /// <summary>
-    /// Podesavanje aplikacije. 
+    /// Podesavanje aplikacije. name/key -> value. value je tekstualna reprezentacija vrednosti datog kljuca.
     /// </summary>
     public class AppSetting
     {
