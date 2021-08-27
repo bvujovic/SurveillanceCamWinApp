@@ -162,8 +162,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AppData.cs" />
+    <Compile Include="Data\Models\DateDir.cs" />
     <Compile Include="Classes\Enums.cs" />
     <Compile Include="Classes\Logger.cs" />
+    <Compile Include="Classes\TestData.cs" />
     <Compile Include="Classes\Utils.cs" />
     <Compile Include="Data\Models\Camera.cs" />
     <Compile Include="Data\DbCtx.cs" />

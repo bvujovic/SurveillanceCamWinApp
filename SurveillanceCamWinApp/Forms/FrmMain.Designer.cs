@@ -41,9 +41,19 @@ namespace SurveillanceCamWinApp.Forms
             this.dgvcCamDeviceName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcCamIpAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcCamLastImageDlStr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.calendar = new System.Windows.Forms.MonthCalendar();
+            this.txt = new System.Windows.Forms.TextBox();
+            this.btnGetDirs = new System.Windows.Forms.Button();
+            this.btnGetFiles = new System.Windows.Forms.Button();
+            this.dgvDateDirs = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dgvcDateDirName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvcDateDirImgSDC = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvcDateDirImgLocal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCameras)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDateDirs)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -55,6 +65,16 @@ namespace SurveillanceCamWinApp.Forms
             label1.Size = new System.Drawing.Size(159, 20);
             label1.TabIndex = 3;
             label1.Text = "Root Image Folder";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            label2.Location = new System.Drawing.Point(12, 9);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(80, 20);
+            label2.TabIndex = 9;
+            label2.Text = "Cameras";
             // 
             // btnDL1pic
             // 
@@ -157,21 +177,106 @@ namespace SurveillanceCamWinApp.Forms
             this.dgvcCamLastImageDlStr.Name = "dgvcCamLastImageDlStr";
             this.dgvcCamLastImageDlStr.ReadOnly = true;
             // 
-            // label2
+            // calendar
             // 
-            label2.AutoSize = true;
-            label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            label2.Location = new System.Drawing.Point(12, 9);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(80, 20);
-            label2.TabIndex = 9;
-            label2.Text = "Cameras";
+            this.calendar.Location = new System.Drawing.Point(12, 254);
+            this.calendar.Name = "calendar";
+            this.calendar.TabIndex = 10;
+            // 
+            // txt
+            // 
+            this.txt.Location = new System.Drawing.Point(251, 254);
+            this.txt.Multiline = true;
+            this.txt.Name = "txt";
+            this.txt.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txt.Size = new System.Drawing.Size(204, 162);
+            this.txt.TabIndex = 11;
+            // 
+            // btnGetDirs
+            // 
+            this.btnGetDirs.Location = new System.Drawing.Point(251, 223);
+            this.btnGetDirs.Name = "btnGetDirs";
+            this.btnGetDirs.Size = new System.Drawing.Size(84, 25);
+            this.btnGetDirs.TabIndex = 12;
+            this.btnGetDirs.Text = "Get Dirs";
+            this.btnGetDirs.UseVisualStyleBackColor = true;
+            this.btnGetDirs.Click += new System.EventHandler(this.BtnGetDirs_Click);
+            // 
+            // btnGetFiles
+            // 
+            this.btnGetFiles.Location = new System.Drawing.Point(371, 223);
+            this.btnGetFiles.Name = "btnGetFiles";
+            this.btnGetFiles.Size = new System.Drawing.Size(84, 25);
+            this.btnGetFiles.TabIndex = 13;
+            this.btnGetFiles.Text = "Get Files";
+            this.btnGetFiles.UseVisualStyleBackColor = true;
+            this.btnGetFiles.Click += new System.EventHandler(this.BtnGetFiles_Click);
+            // 
+            // dgvDateDirs
+            // 
+            this.dgvDateDirs.AllowUserToAddRows = false;
+            this.dgvDateDirs.AllowUserToDeleteRows = false;
+            this.dgvDateDirs.BackgroundColor = System.Drawing.Color.White;
+            this.dgvDateDirs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDateDirs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvcDateDirName,
+            this.dgvcDateDirImgSDC,
+            this.dgvcDateDirImgLocal});
+            this.dgvDateDirs.Location = new System.Drawing.Point(485, 254);
+            this.dgvDateDirs.Name = "dgvDateDirs";
+            this.dgvDateDirs.ReadOnly = true;
+            this.dgvDateDirs.RowHeadersWidth = 4;
+            this.dgvDateDirs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDateDirs.Size = new System.Drawing.Size(526, 185);
+            this.dgvDateDirs.TabIndex = 14;
+            this.dgvDateDirs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDateDirs_CellClick);
+            this.dgvDateDirs.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDateDirs_CellDoubleClick);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(487, 231);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(57, 20);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Dates";
+            // 
+            // dgvcDateDirName
+            // 
+            this.dgvcDateDirName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvcDateDirName.DataPropertyName = "Name";
+            this.dgvcDateDirName.HeaderText = "Date";
+            this.dgvcDateDirName.Name = "dgvcDateDirName";
+            this.dgvcDateDirName.ReadOnly = true;
+            // 
+            // dgvcDateDirImgSDC
+            // 
+            this.dgvcDateDirImgSDC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvcDateDirImgSDC.DataPropertyName = "ImgCountSDC";
+            this.dgvcDateDirImgSDC.HeaderText = "Images SDC";
+            this.dgvcDateDirImgSDC.Name = "dgvcDateDirImgSDC";
+            this.dgvcDateDirImgSDC.ReadOnly = true;
+            // 
+            // dgvcDateDirImgLocal
+            // 
+            this.dgvcDateDirImgLocal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvcDateDirImgLocal.DataPropertyName = "ImgCountLocal";
+            this.dgvcDateDirImgLocal.HeaderText = "Images Local";
+            this.dgvcDateDirImgLocal.Name = "dgvcDateDirImgLocal";
+            this.dgvcDateDirImgLocal.ReadOnly = true;
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.Controls.Add(this.dgvDateDirs);
+            this.Controls.Add(this.btnGetFiles);
+            this.Controls.Add(this.btnGetDirs);
+            this.Controls.Add(this.txt);
+            this.Controls.Add(this.calendar);
+            this.Controls.Add(this.label3);
             this.Controls.Add(label2);
             this.Controls.Add(this.dgvCameras);
             this.Controls.Add(this.btnDelCamera);
@@ -190,6 +295,7 @@ namespace SurveillanceCamWinApp.Forms
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCameras)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDateDirs)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,6 +313,15 @@ namespace SurveillanceCamWinApp.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcCamDeviceName;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcCamIpAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcCamLastImageDlStr;
+        private System.Windows.Forms.MonthCalendar calendar;
+        private System.Windows.Forms.TextBox txt;
+        private System.Windows.Forms.Button btnGetDirs;
+        private System.Windows.Forms.Button btnGetFiles;
+        private System.Windows.Forms.DataGridView dgvDateDirs;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcDateDirName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcDateDirImgSDC;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcDateDirImgLocal;
     }
 }
 

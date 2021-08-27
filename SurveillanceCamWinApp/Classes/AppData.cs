@@ -22,14 +22,14 @@ namespace SurveillanceCamWinApp.Classes
 
         public static List<Camera> Cameras { get; private set; } = new List<Camera>();
 
+        public static List<DateDir> DateDirs { get; private set; } = new List<DateDir>();
+
         public static void LoadAppData()
         {
             using (var db = new Data.DbCtx())
             {
                 var appSettings = db.AppSettings.ToList();
                 RootImageFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder))?.Value;
-                //if(RootImageFolder == null)
-                //    RootImageFolder = 
                 Cameras = db.Cameras.ToList();
             }
         }

@@ -17,6 +17,7 @@ namespace SurveillanceCamWinApp.Forms
         public FrmNewCamera(string deviceName, int ipLastNum)
         {
             InitializeComponent();
+            Text = "Edit Camera";
             txtDeviceName.Text = deviceName;
             numIpLastNum.Value = ipLastNum;
         }

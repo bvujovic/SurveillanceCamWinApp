@@ -24,6 +24,7 @@ namespace SurveillanceCamWinApp.Data.Models
         /// <summary>Prefiks (prva tri broja) u IP adresi za lokalne uredjaje.</summary>
         public const string IP_PREFIX = "192.168.0.";
 
+        //TODO mozda bi IpAddress trebao da sadrzi i http:// prefiks
         /// <summary>Cela IP adresa kamere: IP_PREFIX + IpLastNum</summary>
         public string IpAddress => IP_PREFIX + IpLastNum;
 
