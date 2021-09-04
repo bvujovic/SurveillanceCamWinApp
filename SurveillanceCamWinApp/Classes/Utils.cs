@@ -18,6 +18,18 @@ namespace SurveillanceCamWinApp.Classes
             );
         }
 
+        public static DialogResult ShowMbox(Exception ex, string title)
+        {
+            var msg = ex.Message;
+            if (ex.InnerException != null)
+                msg += Environment.NewLine + ex.InnerException.Message;
+            
+            return MessageBox.Show
+            (
+              msg, title, MessageBoxButtons.OK, MessageBoxIcon.Error
+            );
+        }
+
         /// <summary>Prikazuje modalni MessageBox sa Yes/No pitanjem.</summary>
         public static DialogResult ShowMboxYesNo(string question, string title)
         {
@@ -46,6 +58,7 @@ namespace SurveillanceCamWinApp.Classes
         }
 
         public const string VremeSamoSitnoFormat = "mm:ss.fff";
+        public const string DatumFormat = "yyyy-MM-dd";
         public const string DatumVremeFormat = "yyyy-MM-dd HH:mm";
         public const string DatumVremeSveFormat = "yyyy-MM-dd HH:mm:ss.ff";
 

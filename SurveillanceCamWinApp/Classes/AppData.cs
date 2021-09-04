@@ -22,7 +22,9 @@ namespace SurveillanceCamWinApp.Classes
 
         public static List<Camera> Cameras { get; private set; } = new List<Camera>();
 
-        public static List<DateDir> DateDirs { get; private set; } = new List<DateDir>();
+        //B
+        //public static List<DateDir> DateDirs { get; private set; } = new List<DateDir>();
+        //public static List<ImageFile> ImageFiles { get; private set; } = new List<ImageFile>();
 
         public static void LoadAppData()
         {

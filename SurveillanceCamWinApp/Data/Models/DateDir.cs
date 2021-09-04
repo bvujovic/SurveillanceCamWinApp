@@ -1,6 +1,7 @@
 ﻿using SurveillanceCamWinApp.Classes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace SurveillanceCamWinApp.Data.Models
@@ -10,6 +11,10 @@ namespace SurveillanceCamWinApp.Data.Models
     /// </summary>
     public class DateDir
     {
+        public DateDir()
+        {
+        }
+
         public DateDir(Camera cam, string name)
         {
             Camera = cam;
@@ -19,23 +24,27 @@ namespace SurveillanceCamWinApp.Data.Models
 
         public static void Parse(Camera cam, string resp)
         {
-            var lines = resp.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = resp.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines.Where(it => !it.StartsWith("/System Volume")))
             {
                 var name = line.Substring(1);
-                if (!AppData.DateDirs.Any(it => it.Camera.IdCam == cam.IdCam && it.Name == name))
-                    AppData.DateDirs.Add(new DateDir(cam, name));
+                if (!cam.DateDirs.Any(it => it.Camera.IdCam == cam.IdCam && it.Name == name))
+                    cam.DateDirs.Add(new DateDir(cam, name));
             }
+            cam.DateDirs.Sort((x, y) => y.Name.CompareTo(x.Name));
         }
 
-        private void CalcImgCountLocal()
+        public void CalcImgCountLocal()
         {
             ImgCountLocal = System.IO.Directory.Exists(LocalDirPath) ?
                 System.IO.Directory.GetFiles(LocalDirPath).Length : 0;
         }
 
-        //[Key]
-        //public int IdDateDir { get; set; }
+        [Key]
+        public int IdDateDir { get; set; }
+
+        [Required]
+        public int CameraId { get; set; }
 
         /// <summary>Kamera za koju su vezane slike iz ovog foldera-datuma.</summary>
         public Camera Camera { get; set; }
@@ -43,15 +52,19 @@ namespace SurveillanceCamWinApp.Data.Models
         /// <summary>Naziv foldera - datum slika u formatu yyyy-mm-dd.</summary>
         public string Name { get; set; }
 
+        //public DateTime Date => DateTime.Parse(Name);
+
         /// <summary>Broj slika na SD kartici.</summary>
         public int? ImgCountSDC { get; set; }
 
         /// <summary>Broj skinutih slika na racunaru.</summary>
         public int ImgCountLocal { get; set; }
 
-        /// <summary></summary>
+        /// <summary>Puno ime foldera na lokalnom drajvu.</summary>
         public string LocalDirPath
             => System.IO.Path.Combine(AppData.RootImageFolder, Camera.DeviceName, Name);
+
+        public List<ImageFile> ImageFiles { get; set; } = new List<ImageFile>();
 
         public override string ToString()
             => $"{Camera.DeviceName}/{Name}";

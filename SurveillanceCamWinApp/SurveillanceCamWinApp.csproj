@@ -145,7 +145,6 @@
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -170,6 +169,7 @@
     <Compile Include="Data\Models\Camera.cs" />
     <Compile Include="Data\DbCtx.cs" />
     <Compile Include="Data\Models\AppSetting.cs" />
+    <Compile Include="Data\Models\ImageFile.cs" />
     <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,15 +182,19 @@
     <Compile Include="Forms\FrmNewCamera.Designer.cs">
       <DependentUpon>FrmNewCamera.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\20210814010039_InitialCreate.cs" />
-    <Compile Include="Migrations\20210814010039_InitialCreate.designer.cs">
-      <DependentUpon>20210814010039_InitialCreate.cs</DependentUpon>
+    <Compile Include="Forms\FrmTest.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Migrations\20210820054602_AddCameras.cs" />
-    <Compile Include="Migrations\20210820054602_AddCameras.designer.cs">
-      <DependentUpon>20210820054602_AddCameras.cs</DependentUpon>
+    <Compile Include="Forms\FrmTest.Designer.cs">
+      <DependentUpon>FrmTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\DbCtxModelSnapshot.cs" />
+    <Compile Include="F\Download\CamDate.cs" />
+    <Compile Include="F\Download\Downloader.cs" />
+    <Compile Include="Data\Migrations\20210904013147_Init2.cs" />
+    <Compile Include="Data\Migrations\20210904013147_Init2.designer.cs">
+      <DependentUpon>20210904013147_Init2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Migrations\DbCtxModelSnapshot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\FrmMain.resx">
@@ -198,6 +202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmNewCamera.resx">
       <DependentUpon>FrmNewCamera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmTest.resx">
+      <DependentUpon>FrmTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -219,7 +226,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="test.db">
+    <Content Include="Data\test.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

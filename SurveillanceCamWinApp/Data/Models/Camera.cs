@@ -37,8 +37,13 @@ namespace SurveillanceCamWinApp.Data.Models
         //TODO dodati mogucnost zadavanja redosleda kamera
         //* public int OrderIdx { get; set; }
 
+        public List<DateDir> DateDirs { get; set; } = new List<DateDir>();
+        //public ICollection<DateDir> DateDirs { get; set; }
+
+        public DateDir GetDateDir(DateTime date)
+            => DateDirs.FirstOrDefault(it => DateTime.Parse(it.Name) == date);
+
         public override string ToString()
-            //B => $"{IdCam}, {DeviceName}, {IpAddress}, last DL: {LastImageDL}";
             => $"{DeviceName} @ {IpAddress}";
     }
 }

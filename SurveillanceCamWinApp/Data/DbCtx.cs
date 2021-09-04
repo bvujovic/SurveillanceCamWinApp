@@ -11,9 +11,13 @@ namespace SurveillanceCamWinApp.Data
 
         public DbSet<Models.Camera> Cameras { get; set; }
 
+        public DbSet<Models.DateDir> DateDirs { get; set; }
+
+        public DbSet<Models.ImageFile> ImageFiles { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=test.db");
+            optionsBuilder.UseSqlite("Data Source=Data/test.db");
         }
     }
 }

@@ -10,9 +10,10 @@ namespace SurveillanceCamWinApp.Classes
     public static class TestData
     {
         /// <summary>Da li je testiranje ukljuceno ili ne.</summary>
-        public static bool IsEnabled { get; set; } = true;
+        public static bool IsEnabled { get; set; } = false;
 
-        /// <summary></summary>
+        /// <summary>Test podaci za listanje root direktorijuma na SD kardici.</summary>
+        /// <see cref="http://192.168.0.60/listSdCard"/>
         public static string ListSdCardDirs =>
 @"/System Volume Information
 /2021-08-06
@@ -32,6 +33,18 @@ namespace SurveillanceCamWinApp.Classes
 /2021-08-22
 /2021-08-21
 /2021-08-26
+";
+
+        /// <summary>Test podaci za listanje nekog direktorijuma na SD kardici.</summary>
+        /// <see cref="http://192.168.0.60/listSdCard?y=2021&m=8&d=26"/>
+        public static string ListSdCardFiles =>
+@"/2021-08-26/05.27.15.jpg
+/2021-08-26/05.27.30.jpg
+/2021-08-26/05.27.46.jpg
+/2021-08-26/05.28.02.jpg
+/2021-08-26/05.28.18.jpg
+/2021-08-26/05.28.34.jpg
+/2021-08-26/05.28.50.jpg
 ";
     }
 }

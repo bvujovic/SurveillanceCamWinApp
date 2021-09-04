@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SurveillanceCamWinApp
@@ -16,7 +15,8 @@ namespace SurveillanceCamWinApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Forms.FrmMain());
+            //Application.Run(new Forms.FrmMain());
+            Application.Run(new Forms.FrmTest());
         }
     }
 }
