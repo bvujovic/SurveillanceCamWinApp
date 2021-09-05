@@ -40,7 +40,7 @@ namespace SurveillanceCamWinApp.Forms
                 dgvDateDirs.AutoGenerateColumns = false;
                 dgvImages.AutoGenerateColumns = false;
             }
-            catch (Exception ex) { Utils.ShowMbox(ex.Message, "Loading Data..."); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Loading Data..."); }
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -49,12 +49,7 @@ namespace SurveillanceCamWinApp.Forms
             {
                 AppData.SaveAppData();
             }
-            catch (Exception ex)
-            {
-                Utils.ShowMbox(ex.Message, "Saving Data...");
-                if (ex.Message.Contains("inner"))
-                    Utils.ShowMbox(ex.InnerException.Message, "Saving Data...");
-            }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Saving Data..."); }
         }
 
         private async void BtnDL1pic_Click(object sender, EventArgs e)
@@ -89,7 +84,7 @@ namespace SurveillanceCamWinApp.Forms
                     txtRootImageFolder.Text = AppData.RootImageFolder = dialog.SelectedPath;
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Set Root Image Folder"); }
         }
 
         private void BtnRootImageFolderGoTo_Click(object sender, EventArgs e)
@@ -98,7 +93,7 @@ namespace SurveillanceCamWinApp.Forms
             {
                 System.Diagnostics.Process.Start(AppData.RootImageFolder);
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Show Image"); }
         }
 
         private void BtnNewCamera_Click(object sender, EventArgs e)
@@ -126,7 +121,7 @@ namespace SurveillanceCamWinApp.Forms
                     }
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "New Camera"); }
         }
 
         private void BtnDelCamera_Click(object sender, EventArgs e)
@@ -145,7 +140,7 @@ namespace SurveillanceCamWinApp.Forms
                 }
                 DgvCamerasDataRefresh();
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Delete Camera"); }
         }
 
         private void DgvCamerasDataRefresh()
@@ -157,8 +152,12 @@ namespace SurveillanceCamWinApp.Forms
         private void DgvDateDirsDataRefresh()
         {
             dgvDateDirs.DataSource = null;
-            if (dgvCameras.CurrentRow?.DataBoundItem is Camera cam)
+            var cam = GetCurrentCamera();
+            if (cam != null)
+            {
+                cam.DateDirs.Sort();
                 dgvDateDirs.DataSource = cam.DateDirs;
+            }
         }
 
         private void DgvImagesDataRefresh()
@@ -188,7 +187,10 @@ namespace SurveillanceCamWinApp.Forms
         }
 
         private DateDir GetCurrentDateDir()
-            => dgvDateDirs.CurrentRow.DataBoundItem as DateDir;
+            => dgvDateDirs.CurrentRow?.DataBoundItem as DateDir;
+
+        private Camera GetCurrentCamera()
+            => dgvCameras.CurrentRow?.DataBoundItem as Camera;
 
         private IEnumerable<Camera> GetSelectedCameras()
         {
@@ -232,7 +234,7 @@ namespace SurveillanceCamWinApp.Forms
                 DateDir.Parse(GetSelectedCameras().First(), resp);
                 DgvDateDirsDataRefresh();
             }
-            catch (Exception ex) { Utils.ShowMbox(ex.Message, "Get Dirs"); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Get Dirs"); }
         }
 
         private void BtnGetFiles_Click(object sender, EventArgs e)
@@ -243,26 +245,57 @@ namespace SurveillanceCamWinApp.Forms
                 ImageFile.Parse(GetCurrentDateDir(), resp);
                 DgvImagesDataRefresh();
             }
-            catch (Exception ex) { Utils.ShowMbox(ex.Message, "Get Files"); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Get Files"); }
         }
 
         private void DgvCameras_SelectionChanged(object sender, EventArgs e)
         {
-            dgvDateDirs.DataSource = null;
+            dgvDateDirs.AutoGenerateColumns = false;
+            DgvDateDirsDataRefresh();
         }
 
         private void DgvDateDirs_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex != dgvcDateDirsDL.Index) // handlujem samo klik na DownLoad dugme 
+            //...
+            var dd = GetCurrentDateDir();
+            if (dd == null)
                 return;
-            if (!(dgvDateDirs.CurrentRow?.DataBoundItem is DateDir dateDir))
-                return;
+            if (e.ColumnIndex == dgvcDateDirsDL.Index)
+                F.Download.Downloader.AddDownload(dd); //???
+            if (e.ColumnIndex == dgvcDateDirImgSDC.Index)
+                ;
             //F.Download.Downloader.Get(dateDir);
+        }
+
+        private void DgvDateDirs_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                var dd = GetCurrentDateDir();
+                if (dd != null)
+                    System.Diagnostics.Process.Start(dd.LocalDirPath);
+            }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Open Local Folder"); }
         }
 
         private void DgvImages_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void BtnDelDateDir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var dd = GetCurrentDateDir();
+                var cam = GetCurrentCamera();
+                if (dd != null && cam != null)
+                {
+                    cam.DateDirs.Remove(dd);
+                    DgvDateDirsDataRefresh();
+                }
+            }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Delete Date"); }
         }
     }
 }

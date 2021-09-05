@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SurveillanceCamWinApp.Classes
 {
@@ -22,36 +20,29 @@ namespace SurveillanceCamWinApp.Classes
 
         public static List<Camera> Cameras { get; private set; } = new List<Camera>();
 
-        //B
-        //public static List<DateDir> DateDirs { get; private set; } = new List<DateDir>();
-        //public static List<ImageFile> ImageFiles { get; private set; } = new List<ImageFile>();
+        private static readonly Data.DbCtx db = new Data.DbCtx();
 
         public static void LoadAppData()
         {
-            using (var db = new Data.DbCtx())
-            {
-                var appSettings = db.AppSettings.ToList();
-                RootImageFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder))?.Value;
-                Cameras = db.Cameras.ToList();
-            }
+            var appSettings = db.AppSettings.ToList();
+            RootImageFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder))?.Value;
+            Cameras = db.Cameras.ToList();
+            db.DateDirs.ToList();
+            db.ImageFiles.ToList();
         }
 
         public static void SaveAppData()
         {
-            using (var db = new Data.DbCtx())
+            var appSettings = db.AppSettings.ToList();
+            if (RootImageFolder != null)
             {
-                var appSettings = db.AppSettings.ToList();
-                if (RootImageFolder != null)
-                {
-                    var rootImgFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder));
-                    if (rootImgFolder == null)
-                        db.AppSettings.Add(new AppSetting(nameof(RootImageFolder), RootImageFolder));
-                    else
-                        rootImgFolder.Value = RootImageFolder;
-                }
-
-                db.SaveChanges();
+                var rootImgFolder = appSettings.FirstOrDefault(it => it.Name == nameof(RootImageFolder));
+                if (rootImgFolder == null)
+                    db.AppSettings.Add(new AppSetting(nameof(RootImageFolder), RootImageFolder));
+                else
+                    rootImgFolder.Value = RootImageFolder;
             }
+            db.SaveChanges();
         }
     }
 }

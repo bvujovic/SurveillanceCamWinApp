@@ -15,8 +15,8 @@ namespace SurveillanceCamWinApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Forms.FrmMain());
-            Application.Run(new Forms.FrmTest());
+            Application.Run(new Forms.FrmMain());
+            //Application.Run(new Forms.FrmTest());
         }
     }
 }

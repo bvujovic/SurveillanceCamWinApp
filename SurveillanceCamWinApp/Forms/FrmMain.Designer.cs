@@ -59,6 +59,7 @@
             this.dgvcImagesExistsOnSDC = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvcImagesExistsLocally = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvcImagesDL = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btnDelDateDir = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCameras)).BeginInit();
@@ -206,7 +207,7 @@
             // 
             // btnGetFiles
             // 
-            this.btnGetFiles.Location = new System.Drawing.Point(364, 445);
+            this.btnGetFiles.Location = new System.Drawing.Point(364, 440);
             this.btnGetFiles.Name = "btnGetFiles";
             this.btnGetFiles.Size = new System.Drawing.Size(91, 25);
             this.btnGetFiles.TabIndex = 13;
@@ -233,6 +234,7 @@
             this.dgvDateDirs.Size = new System.Drawing.Size(443, 180);
             this.dgvDateDirs.TabIndex = 14;
             this.dgvDateDirs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDateDirs_CellContentClick);
+            this.dgvDateDirs.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDateDirs_CellDoubleClick);
             // 
             // dgvcDateDirName
             // 
@@ -374,11 +376,22 @@
             this.dgvcImagesDL.ToolTipText = "Download image";
             this.dgvcImagesDL.Width = 31;
             // 
+            // btnDelDateDir
+            // 
+            this.btnDelDateDir.Location = new System.Drawing.Point(283, 440);
+            this.btnDelDateDir.Name = "btnDelDateDir";
+            this.btnDelDateDir.Size = new System.Drawing.Size(75, 25);
+            this.btnDelDateDir.TabIndex = 16;
+            this.btnDelDateDir.Text = "Delete";
+            this.btnDelDateDir.UseVisualStyleBackColor = true;
+            this.btnDelDateDir.Click += new System.EventHandler(this.BtnDelDateDir_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 680);
+            this.Controls.Add(this.btnDelDateDir);
             this.Controls.Add(this.dgvImages);
             this.Controls.Add(this.dgvDateDirs);
             this.Controls.Add(this.btnGetFiles);
@@ -438,6 +451,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvcImagesExistsOnSDC;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvcImagesExistsLocally;
         private System.Windows.Forms.DataGridViewButtonColumn dgvcImagesDL;
+        private System.Windows.Forms.Button btnDelDateDir;
     }
 }
 

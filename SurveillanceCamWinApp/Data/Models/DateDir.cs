@@ -9,7 +9,7 @@ namespace SurveillanceCamWinApp.Data.Models
     /// <summary>
     /// Klasa ciji objekti predstavljaju direktorijum u kojem su slike napravljene jednog datuma.
     /// </summary>
-    public class DateDir
+    public class DateDir : IComparable<DateDir>
     {
         public DateDir()
         {
@@ -31,7 +31,7 @@ namespace SurveillanceCamWinApp.Data.Models
                 if (!cam.DateDirs.Any(it => it.Camera.IdCam == cam.IdCam && it.Name == name))
                     cam.DateDirs.Add(new DateDir(cam, name));
             }
-            cam.DateDirs.Sort((x, y) => y.Name.CompareTo(x.Name));
+            cam.DateDirs.Sort();
         }
 
         public void CalcImgCountLocal()
@@ -68,5 +68,24 @@ namespace SurveillanceCamWinApp.Data.Models
 
         public override string ToString()
             => $"{Camera.DeviceName}/{Name}";
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is DateDir that))
+                return false;
+            if (this.Camera == null || that.Camera == null)
+                return false;
+            return this.CameraId == that.CameraId && this.Name == that.Name;
+        }
+
+        public override int GetHashCode()
+            => Name.GetHashCode() + CameraId;
+
+        public int CompareTo(DateDir that)
+        {
+            if (that == null)
+                return -1;
+            return that.Name.CompareTo(this.Name);
+        }
     }
 }
