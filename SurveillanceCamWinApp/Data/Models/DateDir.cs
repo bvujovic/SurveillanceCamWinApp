@@ -52,10 +52,20 @@ namespace SurveillanceCamWinApp.Data.Models
         /// <summary>Naziv foldera - datum slika u formatu yyyy-mm-dd.</summary>
         public string Name { get; set; }
 
-        //public DateTime Date => DateTime.Parse(Name);
+        public DateTime Date => DateTime.Parse(Name);
 
+        // public int? ImgCountSDC { get; set; }
+        private int? imgCountSDC;
         /// <summary>Broj slika na SD kartici.</summary>
-        public int? ImgCountSDC { get; set; }
+        public int? ImgCountSDC
+        {
+            get
+            {
+                return imgCountSDC.HasValue ? imgCountSDC
+                    : (ImageFiles.Count > 0 ? imgCountSDC = (int?)ImageFiles.Count : null);
+            }
+            set { imgCountSDC = value; }
+        }
 
         /// <summary>Broj skinutih slika na racunaru.</summary>
         public int ImgCountLocal { get; set; }

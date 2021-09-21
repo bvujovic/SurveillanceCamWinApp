@@ -8,7 +8,7 @@ namespace SurveillanceCamWinApp.Data.Models
     /// <summary>
     /// Slika napravljena ESP32CAM-om.
     /// </summary>
-    public class ImageFile
+    public class ImageFile : IComparable<ImageFile>
     {
         public ImageFile()
         {
@@ -62,5 +62,12 @@ namespace SurveillanceCamWinApp.Data.Models
 
         public override string ToString()
             => $"{Name}";
+
+        public int CompareTo(ImageFile that)
+        {
+            if (that == null)
+                return -1;
+            return this.Name.CompareTo(that.Name);
+        }
     }
 }

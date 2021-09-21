@@ -60,6 +60,11 @@
             this.dgvcImagesExistsLocally = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvcImagesDL = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btnDelDateDir = new System.Windows.Forms.Button();
+            this.lblDownloader = new System.Windows.Forms.Label();
+            this.lblDatesRowCount = new System.Windows.Forms.Label();
+            this.lblImagesRowCount = new System.Windows.Forms.Label();
+            this.ucTimeInterval1 = new SurveillanceCamWinApp.F.ImagePreview.UcTimeInterval();
+            this.ucSnapShot1 = new SurveillanceCamWinApp.F.ImagePreview.UcSnapShot();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCameras)).BeginInit();
@@ -233,8 +238,11 @@
             this.dgvDateDirs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvDateDirs.Size = new System.Drawing.Size(443, 180);
             this.dgvDateDirs.TabIndex = 14;
-            this.dgvDateDirs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDateDirs_CellContentClick);
+            this.dgvDateDirs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDateDirs_CellClick);
             this.dgvDateDirs.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDateDirs_CellDoubleClick);
+            this.dgvDateDirs.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DgvDateDirs_RowsAdded);
+            this.dgvDateDirs.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.DgvDateDirs_RowsRemoved);
+            this.dgvDateDirs.SelectionChanged += new System.EventHandler(this.DgvDateDirs_SelectionChanged);
             // 
             // dgvcDateDirName
             // 
@@ -314,6 +322,8 @@
             // 
             this.dgvImages.AllowUserToAddRows = false;
             this.dgvImages.AllowUserToDeleteRows = false;
+            this.dgvImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dgvImages.BackgroundColor = System.Drawing.Color.White;
             this.dgvImages.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvImages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -325,9 +335,11 @@
             this.dgvImages.Name = "dgvImages";
             this.dgvImages.ReadOnly = true;
             this.dgvImages.RowHeadersWidth = 4;
-            this.dgvImages.Size = new System.Drawing.Size(443, 179);
+            this.dgvImages.Size = new System.Drawing.Size(443, 158);
             this.dgvImages.TabIndex = 15;
-            this.dgvImages.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvImages_CellContentClick);
+            this.dgvImages.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvImages_CellDoubleClick);
+            this.dgvImages.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DgvImages_RowsAdded);
+            this.dgvImages.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.DgvImages_RowsRemoved);
             // 
             // dgvcImagesName
             // 
@@ -386,11 +398,62 @@
             this.btnDelDateDir.UseVisualStyleBackColor = true;
             this.btnDelDateDir.Click += new System.EventHandler(this.BtnDelDateDir_Click);
             // 
+            // lblDownloader
+            // 
+            this.lblDownloader.AutoSize = true;
+            this.lblDownloader.Location = new System.Drawing.Point(843, 197);
+            this.lblDownloader.Name = "lblDownloader";
+            this.lblDownloader.Size = new System.Drawing.Size(81, 16);
+            this.lblDownloader.TabIndex = 17;
+            this.lblDownloader.Text = "Downloader";
+            // 
+            // lblDatesRowCount
+            // 
+            this.lblDatesRowCount.AutoSize = true;
+            this.lblDatesRowCount.Location = new System.Drawing.Point(9, 440);
+            this.lblDatesRowCount.Name = "lblDatesRowCount";
+            this.lblDatesRowCount.Size = new System.Drawing.Size(91, 16);
+            this.lblDatesRowCount.TabIndex = 18;
+            this.lblDatesRowCount.Text = "Dates Count: /";
+            // 
+            // lblImagesRowCount
+            // 
+            this.lblImagesRowCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblImagesRowCount.AutoSize = true;
+            this.lblImagesRowCount.Location = new System.Drawing.Point(12, 650);
+            this.lblImagesRowCount.Name = "lblImagesRowCount";
+            this.lblImagesRowCount.Size = new System.Drawing.Size(100, 16);
+            this.lblImagesRowCount.TabIndex = 19;
+            this.lblImagesRowCount.Text = "Images Count: /";
+            // 
+            // ucTimeInterval1
+            // 
+            this.ucTimeInterval1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucTimeInterval1.Location = new System.Drawing.Point(514, 254);
+            this.ucTimeInterval1.Margin = new System.Windows.Forms.Padding(4);
+            this.ucTimeInterval1.Name = "ucTimeInterval1";
+            this.ucTimeInterval1.Size = new System.Drawing.Size(284, 28);
+            this.ucTimeInterval1.TabIndex = 20;
+            // 
+            // ucSnapShot1
+            // 
+            this.ucSnapShot1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSnapShot1.Location = new System.Drawing.Point(634, 389);
+            this.ucSnapShot1.Margin = new System.Windows.Forms.Padding(4);
+            this.ucSnapShot1.Name = "ucSnapShot1";
+            this.ucSnapShot1.Size = new System.Drawing.Size(200, 185);
+            this.ucSnapShot1.TabIndex = 21;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 680);
+            this.Controls.Add(this.ucSnapShot1);
+            this.Controls.Add(this.ucTimeInterval1);
+            this.Controls.Add(this.lblImagesRowCount);
+            this.Controls.Add(this.lblDatesRowCount);
+            this.Controls.Add(this.lblDownloader);
             this.Controls.Add(this.btnDelDateDir);
             this.Controls.Add(this.dgvImages);
             this.Controls.Add(this.dgvDateDirs);
@@ -452,6 +515,11 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvcImagesExistsLocally;
         private System.Windows.Forms.DataGridViewButtonColumn dgvcImagesDL;
         private System.Windows.Forms.Button btnDelDateDir;
+        private System.Windows.Forms.Label lblDownloader;
+        private System.Windows.Forms.Label lblDatesRowCount;
+        private System.Windows.Forms.Label lblImagesRowCount;
+        private F.ImagePreview.UcTimeInterval ucTimeInterval1;
+        private F.ImagePreview.UcSnapShot ucSnapShot1;
     }
 }
 

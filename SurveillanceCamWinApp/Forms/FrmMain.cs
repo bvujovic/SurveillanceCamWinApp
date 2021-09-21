@@ -1,14 +1,11 @@
 ﻿using SurveillanceCamWinApp.Classes;
 using SurveillanceCamWinApp.Data.Models;
+using SurveillanceCamWinApp.F.Download;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SurveillanceCamWinApp.Forms
@@ -39,8 +36,22 @@ namespace SurveillanceCamWinApp.Forms
                 DgvCamerasDataRefresh();
                 dgvDateDirs.AutoGenerateColumns = false;
                 dgvImages.AutoGenerateColumns = false;
+
+                Downloader.Started += Downloader_Started;
+                Downloader.Finished += Downloader_Finished;
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Loading Data..."); }
+        }
+
+        private void Downloader_Finished(object sender, EventArgs e)
+        {
+            lblDownloader.BackColor = this.BackColor;
+
+        }
+
+        private void Downloader_Started(object sender, EventArgs e)
+        {
+            lblDownloader.BackColor = Color.Green;
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -52,26 +63,22 @@ namespace SurveillanceCamWinApp.Forms
             catch (Exception ex) { Utils.ShowMbox(ex, "Saving Data..."); }
         }
 
-        private async void BtnDL1pic_Click(object sender, EventArgs e)
+        private void BtnDL1pic_Click(object sender, EventArgs e)
         {
             try
             {
                 //var testUrl = "https://github.com/bvujovic/SurveillanceCam/blob/master/data/webcam.png?raw=true";
                 //             http://192.168.0.60/sdCardImg?img=/2021-08-26/05.28.02.jpg
-                var testUrl = "http://192.168.0.60/sdCardImg?img=/2021-08-21/03.46.36.jpg";
-                await DownloadImageAsync(testUrl);
-                Utils.ShowMbox("Kraj", "DownloadImageAsync()");
-            }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
-        }
+                //var testUrl = "http://192.168.0.60/sdCardImg?img=/2021-08-21/03.46.36.jpg";
+                //await DownloadImageAsync(testUrl);
+                //Utils.ShowMbox("Kraj", "DownloadImageAsync()");
 
-        /// <see cref="https://stackoverflow.com/questions/24797485/how-to-download-image-from-url"/>
-        private async Task DownloadImageAsync(string url)
-        {
-            using (var client = new WebClient())
-            {
-                await client.DownloadFileTaskAsync(new Uri(url), @"d:\Glavni\TempDownloads\test.jpg");
+                //Downloader.AddDownload(new CamDate(CurrentCamera, null));
+                //F.Download.Downloader.AddDownload(GetCurrentDateDir());
+
+                ucSnapShot1.ImageFile = CurrentImageFile;
             }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Test Download"); }
         }
 
         private void BtnImagesFolderBrowse_Click(object sender, EventArgs e)
@@ -152,7 +159,7 @@ namespace SurveillanceCamWinApp.Forms
         private void DgvDateDirsDataRefresh()
         {
             dgvDateDirs.DataSource = null;
-            var cam = GetCurrentCamera();
+            var cam = CurrentCamera;
             if (cam != null)
             {
                 cam.DateDirs.Sort();
@@ -163,8 +170,14 @@ namespace SurveillanceCamWinApp.Forms
         private void DgvImagesDataRefresh()
         {
             dgvImages.DataSource = null;
-            if (dgvDateDirs.CurrentRow?.DataBoundItem is DateDir dateDir)
-                dgvImages.DataSource = dateDir.ImageFiles;
+            var dd = CurrentDateDir;
+            if (dd != null)
+            {
+                dd.ImageFiles.Sort();
+                dgvImages.DataSource = dd.ImageFiles;
+            }
+            //if (dgvDateDirs.CurrentRow?.DataBoundItem is DateDir dateDir)
+            //    dgvImages.DataSource = dateDir.ImageFiles;
         }
 
         private void DgvCameras_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -186,11 +199,14 @@ namespace SurveillanceCamWinApp.Forms
             }
         }
 
-        private DateDir GetCurrentDateDir()
+        private Camera CurrentCamera
+            => dgvCameras.CurrentRow?.DataBoundItem as Camera;
+
+        private DateDir CurrentDateDir
             => dgvDateDirs.CurrentRow?.DataBoundItem as DateDir;
 
-        private Camera GetCurrentCamera()
-            => dgvCameras.CurrentRow?.DataBoundItem as Camera;
+        private ImageFile CurrentImageFile
+            => dgvImages.CurrentRow?.DataBoundItem as ImageFile;
 
         private IEnumerable<Camera> GetSelectedCameras()
         {
@@ -242,7 +258,7 @@ namespace SurveillanceCamWinApp.Forms
             try
             {
                 var resp = ListSdCard(calendar.SelectionStart);
-                ImageFile.Parse(GetCurrentDateDir(), resp);
+                ImageFile.Parse(CurrentDateDir, resp);
                 DgvImagesDataRefresh();
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Get Files"); }
@@ -254,41 +270,42 @@ namespace SurveillanceCamWinApp.Forms
             DgvDateDirsDataRefresh();
         }
 
-        private void DgvDateDirs_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvDateDirs_SelectionChanged(object sender, EventArgs e)
         {
-            //...
-            var dd = GetCurrentDateDir();
+            dgvImages.AutoGenerateColumns = false;
+            DgvImagesDataRefresh();
+        }
+
+        private void DgvDateDirs_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var dd = CurrentDateDir;
             if (dd == null)
                 return;
             if (e.ColumnIndex == dgvcDateDirsDL.Index)
-                F.Download.Downloader.AddDownload(dd); //???
+                Downloader.AddDownload(dd);
             if (e.ColumnIndex == dgvcDateDirImgSDC.Index)
-                ;
-            //F.Download.Downloader.Get(dateDir);
+                Downloader.AddDownload(new CamDate(CurrentCamera, CurrentDateDir.Date));
+            if (e.ColumnIndex == dgvcDateDirImgLocal.Index)
+                CurrentDateDir.ImgCountLocal = CurrentDateDir.ImageFiles.Count(it => it.ExistsLocally);
         }
 
         private void DgvDateDirs_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                var dd = GetCurrentDateDir();
+                var dd = CurrentDateDir;
                 if (dd != null)
                     System.Diagnostics.Process.Start(dd.LocalDirPath);
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Open Local Folder"); }
         }
 
-        private void DgvImages_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void BtnDelDateDir_Click(object sender, EventArgs e)
         {
             try
             {
-                var dd = GetCurrentDateDir();
-                var cam = GetCurrentCamera();
+                var dd = CurrentDateDir;
+                var cam = CurrentCamera;
                 if (dd != null && cam != null)
                 {
                     cam.DateDirs.Remove(dd);
@@ -297,5 +314,34 @@ namespace SurveillanceCamWinApp.Forms
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Delete Date"); }
         }
+
+        private void DgvImages_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                var img = CurrentImageFile;
+                if (img != null && img.ExistsLocally)
+                    System.Diagnostics.Process.Start(img.LocalImagePath);
+            }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Open Local Folder"); }
+        }
+
+        private void DgvDateDirs_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+            => DgvDateDirs_RowCountChanged();
+
+        private void DgvDateDirs_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+            => DgvDateDirs_RowCountChanged();
+
+        private void DgvDateDirs_RowCountChanged()
+            => lblDatesRowCount.Text = $"Dates Count: {dgvDateDirs.RowCount}";
+
+        private void DgvImages_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+            => DgvImages_RowCountChanged();
+
+        private void DgvImages_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+            => DgvImages_RowCountChanged();
+
+        private void DgvImages_RowCountChanged()
+            => lblImagesRowCount.Text = $"Images Count: {dgvImages.RowCount}";
     }
 }

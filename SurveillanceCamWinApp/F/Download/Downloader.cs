@@ -57,7 +57,7 @@ namespace SurveillanceCamWinApp.F.Download
                 await GetImage(img);
         }
 
-        /// <summary>Download for CamDate/ImageFile/DateDir is finished.</summary>
+        /// <summary>Download for CamDate/DateDir/ImageFile is finished.</summary>
         public static event EventHandler Finished;
 
         /// <summary>Download is started.</summary>
@@ -69,9 +69,10 @@ namespace SurveillanceCamWinApp.F.Download
         public static bool InProgress { get; private set; } = false;
 
         /// <summary>Dodaje trazeni objekat u listu za download.</summary>
-        /// <param name="input">ImageFile/DateDir/CamDate</param>
+        /// <param name="input">CamDate/DateDir/ImageFile</param>
         public static void AddDownload(object input)
         {
+            // ako se trazi DateDir (sve slike za datum), prvo je potrebno dohvatiti spisak tih slika
             if (input is DateDir dd)
                 downloads.Add(new CamDate(dd.Camera, DateTime.Parse(dd.Name)));
 
@@ -113,7 +114,6 @@ namespace SurveillanceCamWinApp.F.Download
 
             //TODO razmisliti sta tacno oznacava Started i Finished
             // mozda mi trebaju 2 para strat finish dogadjaja: jedan par za jedan DL, a jedan za sve
-
 
             if (downloads.Count > 0)
                 await Download();
