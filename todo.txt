@@ -1,0 +1,5 @@
+  + brisanje lokalno i na kameri
+  - git push
+  - refakt koda za brisanje slika
+  - odvajanje koda za brisanje slika u poseban fajl/klasu (ImageOps)
+  - UcSnapShot

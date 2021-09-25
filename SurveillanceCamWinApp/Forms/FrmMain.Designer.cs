@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label label1;
             System.Windows.Forms.Label label2;
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -52,6 +53,10 @@
             this.dgvcDateDirImgSDC = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcDateDirImgLocal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcDateDirsDL = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.ctxMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ctxItemDelRemote = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxItemDelLocal = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxItemDelBoth = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvImages = new System.Windows.Forms.DataGridView();
@@ -63,12 +68,13 @@
             this.lblDownloader = new System.Windows.Forms.Label();
             this.lblDatesRowCount = new System.Windows.Forms.Label();
             this.lblImagesRowCount = new System.Windows.Forms.Label();
-            this.ucTimeInterval1 = new SurveillanceCamWinApp.F.ImagePreview.UcTimeInterval();
             this.ucSnapShot1 = new SurveillanceCamWinApp.F.ImagePreview.UcSnapShot();
+            this.ucTimeInterval1 = new SurveillanceCamWinApp.F.ImagePreview.UcTimeInterval();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCameras)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDateDirs)).BeginInit();
+            this.ctxMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvImages)).BeginInit();
             this.SuspendLayout();
             // 
@@ -231,6 +237,7 @@
             this.dgvcDateDirImgSDC,
             this.dgvcDateDirImgLocal,
             this.dgvcDateDirsDL});
+            this.dgvDateDirs.ContextMenuStrip = this.ctxMenu;
             this.dgvDateDirs.Location = new System.Drawing.Point(12, 254);
             this.dgvDateDirs.Name = "dgvDateDirs";
             this.dgvDateDirs.ReadOnly = true;
@@ -298,6 +305,37 @@
             this.dgvcDateDirsDL.ToolTipText = "Download all images for the date";
             this.dgvcDateDirsDL.Width = 31;
             // 
+            // ctxMenu
+            // 
+            this.ctxMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ctxItemDelRemote,
+            this.ctxItemDelLocal,
+            this.ctxItemDelBoth});
+            this.ctxMenu.Name = "ctxMenu";
+            this.ctxMenu.ShowImageMargin = false;
+            this.ctxMenu.Size = new System.Drawing.Size(130, 70);
+            // 
+            // ctxItemDelRemote
+            // 
+            this.ctxItemDelRemote.Name = "ctxItemDelRemote";
+            this.ctxItemDelRemote.Size = new System.Drawing.Size(129, 22);
+            this.ctxItemDelRemote.Text = "Delete On Cam";
+            this.ctxItemDelRemote.Click += new System.EventHandler(this.CtxItemDelRemote_Click);
+            // 
+            // ctxItemDelLocal
+            // 
+            this.ctxItemDelLocal.Name = "ctxItemDelLocal";
+            this.ctxItemDelLocal.Size = new System.Drawing.Size(129, 22);
+            this.ctxItemDelLocal.Text = "Delete Locally";
+            this.ctxItemDelLocal.Click += new System.EventHandler(this.CtxItemDelLocal_Click);
+            // 
+            // ctxItemDelBoth
+            // 
+            this.ctxItemDelBoth.Name = "ctxItemDelBoth";
+            this.ctxItemDelBoth.Size = new System.Drawing.Size(129, 22);
+            this.ctxItemDelBoth.Text = "Delete Both";
+            this.ctxItemDelBoth.Click += new System.EventHandler(this.CtxItemDelBoth_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -331,10 +369,11 @@
             this.dgvcImagesExistsOnSDC,
             this.dgvcImagesExistsLocally,
             this.dgvcImagesDL});
+            this.dgvImages.ContextMenuStrip = this.ctxMenu;
             this.dgvImages.Location = new System.Drawing.Point(12, 489);
             this.dgvImages.Name = "dgvImages";
             this.dgvImages.ReadOnly = true;
-            this.dgvImages.RowHeadersWidth = 4;
+            this.dgvImages.RowHeadersWidth = 22;
             this.dgvImages.Size = new System.Drawing.Size(443, 158);
             this.dgvImages.TabIndex = 15;
             this.dgvImages.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvImages_CellDoubleClick);
@@ -426,6 +465,16 @@
             this.lblImagesRowCount.TabIndex = 19;
             this.lblImagesRowCount.Text = "Images Count: /";
             // 
+            // ucSnapShot1
+            // 
+            this.ucSnapShot1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSnapShot1.ImageFile = null;
+            this.ucSnapShot1.Location = new System.Drawing.Point(634, 389);
+            this.ucSnapShot1.Margin = new System.Windows.Forms.Padding(4);
+            this.ucSnapShot1.Name = "ucSnapShot1";
+            this.ucSnapShot1.Size = new System.Drawing.Size(200, 185);
+            this.ucSnapShot1.TabIndex = 21;
+            // 
             // ucTimeInterval1
             // 
             this.ucTimeInterval1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -434,15 +483,6 @@
             this.ucTimeInterval1.Name = "ucTimeInterval1";
             this.ucTimeInterval1.Size = new System.Drawing.Size(284, 28);
             this.ucTimeInterval1.TabIndex = 20;
-            // 
-            // ucSnapShot1
-            // 
-            this.ucSnapShot1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucSnapShot1.Location = new System.Drawing.Point(634, 389);
-            this.ucSnapShot1.Margin = new System.Windows.Forms.Padding(4);
-            this.ucSnapShot1.Name = "ucSnapShot1";
-            this.ucSnapShot1.Size = new System.Drawing.Size(200, 185);
-            this.ucSnapShot1.TabIndex = 21;
             // 
             // FrmMain
             // 
@@ -481,6 +521,7 @@
             this.Load += new System.EventHandler(this.FrmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCameras)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDateDirs)).EndInit();
+            this.ctxMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvImages)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -520,6 +561,10 @@
         private System.Windows.Forms.Label lblImagesRowCount;
         private F.ImagePreview.UcTimeInterval ucTimeInterval1;
         private F.ImagePreview.UcSnapShot ucSnapShot1;
+        private System.Windows.Forms.ContextMenuStrip ctxMenu;
+        private System.Windows.Forms.ToolStripMenuItem ctxItemDelRemote;
+        private System.Windows.Forms.ToolStripMenuItem ctxItemDelLocal;
+        private System.Windows.Forms.ToolStripMenuItem ctxItemDelBoth;
     }
 }
 

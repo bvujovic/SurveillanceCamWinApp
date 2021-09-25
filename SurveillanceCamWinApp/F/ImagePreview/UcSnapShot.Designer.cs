@@ -50,6 +50,7 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             this.pic.Location = new System.Drawing.Point(0, 16);
             this.pic.Name = "pic";
             this.pic.Size = new System.Drawing.Size(200, 169);
+            this.pic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pic.TabIndex = 1;
             this.pic.TabStop = false;
             // 
@@ -60,7 +61,7 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             this.Controls.Add(this.pic);
             this.Controls.Add(this.lbl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UcSnapShot";
             this.Size = new System.Drawing.Size(200, 185);
             ((System.ComponentModel.ISupportInitialize)(this.pic)).EndInit();

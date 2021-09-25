@@ -23,6 +23,11 @@ namespace SurveillanceCamWinApp.Data.Models
 
         public static void Parse(DateDir dateDir, string resp)
         {
+            if (string.IsNullOrEmpty(resp))
+            {
+                dateDir.ImgCountSDC = 0;
+                return;
+            }
             var lines = resp.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
@@ -34,6 +39,12 @@ namespace SurveillanceCamWinApp.Data.Models
                 if (!dateDir.ImageFiles.Any(it => it.DateDir.Name == dateDir.Name && it.Name == name))
                     dateDir.ImageFiles.Add(new ImageFile(dateDir, name));
             }
+            // ako je neka slika obrisana na kameri
+            // ... mozda je treba izbaciti iz ImageFiles ako je nema ni lokalno???
+            foreach (var img in dateDir.ImageFiles)
+                if (!lines.Any(it => it.EndsWith(img.Name)))
+                    img.ExistsOnSDC = false;
+            dateDir.ImgCountSDC = dateDir.ImageFiles.Count(it => it.ExistsOnSDC.HasValue && it.ExistsOnSDC.Value);
         }
 
         [Key]

@@ -65,7 +65,6 @@ namespace SurveillanceCamWinApp.F.Download
 
         private readonly static List<object> downloads = new List<object>();
 
-        //B private static bool inProgress = false;
         public static bool InProgress { get; private set; } = false;
 
         /// <summary>Dodaje trazeni objekat u listu za download.</summary>
@@ -121,9 +120,4 @@ namespace SurveillanceCamWinApp.F.Download
                 InProgress = false;
         }
     }
-
-    //public enum DLType
-    //{
-    //    Dir, File, Query //?Root, QueryDir
-    //}
 }

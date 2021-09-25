@@ -219,6 +219,11 @@ namespace SurveillanceCamWinApp.Forms
             return cams;
         }
 
+        //TODO primeniti ovu foru sa Cast i sl na GetSelectedCameras() ako ne bude nekih gresaka
+        private IEnumerable<ImageFile> GetSelectedImages()
+            => dgvImages.SelectedRows.Cast<DataGridViewRow>().Select(it => it.DataBoundItem)
+                .Cast<ImageFile>();
+
         /// <summary>Uzimanje liste svih foldera/fajlova u folderu sa SD kartice.</summary>
         private string ListSdCard(DateTime? dt)
         {
@@ -323,7 +328,7 @@ namespace SurveillanceCamWinApp.Forms
                 if (img != null && img.ExistsLocally)
                     System.Diagnostics.Process.Start(img.LocalImagePath);
             }
-            catch (Exception ex) { Utils.ShowMbox(ex, "Open Local Folder"); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Open Image"); }
         }
 
         private void DgvDateDirs_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -343,5 +348,116 @@ namespace SurveillanceCamWinApp.Forms
 
         private void DgvImages_RowCountChanged()
             => lblImagesRowCount.Text = $"Images Count: {dgvImages.RowCount}";
+
+        public static void DelImage(ImageFile img)
+        {
+            var dd = img.DateDir;
+            var url = $"http://{dd.Camera.IpAddress}/delImg?img=/{dd.Name}/{img.Name}";
+            WebRequest.Create(url).GetResponse();
+        }
+
+        public static void DelFolder(DateDir dd)
+        {
+            var url = $"http://{dd.Camera.IpAddress}/delFolder?folder={dd.Name}";
+            WebRequest.Create(url).GetResponse();
+        }
+
+        private void CtxItemDelRemote_Click(object sender, EventArgs e)
+        {
+            var images = ctxMenu.SourceControl == dgvImages;
+            if (Utils.ShowMboxYesNo("Are you sure?", "Remote Deletion") != DialogResult.Yes)
+                return;
+            try
+            {
+                if (images) // brisanje slika na kameri
+                {
+                    if (dgvImages.SelectedRows.Count == 0)
+                        DelImage(CurrentImageFile);
+                    else
+                        foreach (var img in GetSelectedImages())
+                            DelImage(img);
+                }
+                else // brisanje foldera na kameri
+                {
+                    DelFolder(CurrentDateDir);
+                    foreach (var img in CurrentDateDir.ImageFiles)
+                        img.ExistsOnSDC = false;
+                }
+                dgvImages.Refresh();
+                dgvDateDirs.Refresh();
+            }
+            catch (Exception ex) { Utils.ShowMbox(ex, $"Delete {(images ? "Images" : "Folders")} On Cam"); }
+        }
+
+        private void CtxItemDelLocal_Click(object sender, EventArgs e)
+        {
+            var images = ctxMenu.SourceControl == dgvImages;
+            if (Utils.ShowMboxYesNo("Are you sure?", "Local Deletion") != DialogResult.Yes)
+                return;
+            try
+            {
+                if (images) // brisanje slika lokalno
+                {
+                    if (dgvImages.SelectedRows.Count == 0)
+                        System.IO.File.Delete(CurrentImageFile.LocalImagePath);
+                    else
+                        foreach (var img in GetSelectedImages())
+                            System.IO.File.Delete(img.LocalImagePath);
+                    CurrentDateDir.CalcImgCountLocal();
+                    dgvImages.Refresh();
+                }
+                else // brisanje foldera lokalno
+                {
+                    System.IO.Directory.Delete(CurrentDateDir.LocalDirPath, true);
+                }
+                dgvDateDirs.Refresh();
+            }
+            catch (Exception ex) { Utils.ShowMbox(ex, $"Delete {(images ? "Images" : "Folders")} Locally"); }
+        }
+
+        private void CtxItemDelBoth_Click(object sender, EventArgs e)
+        {
+            // CurrentDateDir.ImageFiles.Remove(CurrentImageFile);
+
+            var images = ctxMenu.SourceControl == dgvImages;
+            if (Utils.ShowMboxYesNo("Are you sure?", "Local Deletion") != DialogResult.Yes)
+                return;
+            try
+            {
+                if (images) // brisanje slika potpuno
+                {
+                    if (dgvImages.SelectedRows.Count == 0)
+                    {
+                        System.IO.File.Delete(CurrentImageFile.LocalImagePath);
+                        DelImage(CurrentImageFile);
+                        CurrentDateDir.ImageFiles.Remove(CurrentImageFile);
+                        DgvImagesDataRefresh();
+                    }
+                    else
+                        foreach (var img in GetSelectedImages())
+                        {
+                            System.IO.File.Delete(img.LocalImagePath);
+                            DelImage(img);
+                            CurrentDateDir.ImageFiles.Remove(img);
+                        }
+                    CurrentDateDir.CalcImgCountLocal();
+                    DgvImagesDataRefresh();
+                    dgvImages.Refresh();
+                }
+                else // brisanje foldera potpuno
+                {
+                    var dd = CurrentDateDir;
+                    System.IO.Directory.Delete(dd.LocalDirPath, true);
+                    DelFolder(dd);
+                    dd.Camera.DateDirs.Remove(dd);
+                    DgvDateDirsDataRefresh();
+                }
+                dgvDateDirs.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Utils.ShowMbox(ex, $"Delete {(images ? "Images" : "Folders")} Completely");
+            }
+        }
     }
 }
