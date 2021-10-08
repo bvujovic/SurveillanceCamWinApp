@@ -69,7 +69,7 @@ namespace SurveillanceCamWinApp.Classes
 
         public static void GoToLink(string url)
         {
-            try { System.Diagnostics.Process.Start(url); }
+            try { System.Diagnostics.Process.Start("chrome.exe", url); }
             catch (Exception ex) { Logger.AddToLog(ex); }
         }
     }

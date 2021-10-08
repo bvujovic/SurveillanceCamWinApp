@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveillanceCamWinApp", "Su
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA61B5B1-3670-41EA-A9E7-5C39BEC4F43C}"
 	ProjectSection(SolutionItems) = preProject
+		surv-main-ss.png = surv-main-ss.png
 		todo.txt = todo.txt
 	EndProjectSection
 EndProject

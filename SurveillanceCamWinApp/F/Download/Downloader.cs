@@ -106,7 +106,8 @@ namespace SurveillanceCamWinApp.F.Download
             }
             catch (Exception ex)
             {
-                Logger.OutputEventTime(ex.Message);
+                //B Logger.OutputEventTime(ex.Message);
+                Logger.AddToLog("Downloader: " + ex.Message);
             }
             Logger.OutputEventTime($"Finished: {dl}");
             Finished?.Invoke(dl, EventArgs.Empty);

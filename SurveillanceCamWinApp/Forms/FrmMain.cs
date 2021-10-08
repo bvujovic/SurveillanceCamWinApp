@@ -37,29 +37,25 @@ namespace SurveillanceCamWinApp.Forms
                 dgvDateDirs.AutoGenerateColumns = false;
                 dgvImages.AutoGenerateColumns = false;
 
+                Logger.AddedToLog += Logger_AddedToLog;
                 Downloader.Started += Downloader_Started;
                 Downloader.Finished += Downloader_Finished;
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Loading Data..."); }
         }
 
-        private void Downloader_Finished(object sender, EventArgs e)
-        {
-            lblDownloader.BackColor = this.BackColor;
+        private void Logger_AddedToLog(object sender, string e)
+            => lblStatus.Text = "Last Status: " + e;
 
-        }
+        private void Downloader_Finished(object sender, EventArgs e)
+            => lblDownloader.BackColor = this.BackColor;
 
         private void Downloader_Started(object sender, EventArgs e)
-        {
-            lblDownloader.BackColor = Color.Green;
-        }
+            => lblDownloader.BackColor = Color.Green;
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try
-            {
-                AppData.SaveAppData();
-            }
+            try { AppData.SaveAppData(); }
             catch (Exception ex) { Utils.ShowMbox(ex, "Saving Data..."); }
         }
 
@@ -182,21 +178,30 @@ namespace SurveillanceCamWinApp.Forms
 
         private void DgvCameras_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var selCam = dgvCameras.CurrentRow?.DataBoundItem as Camera;
-            var frm = new FrmNewCamera(selCam.DeviceName, selCam.IpLastNum);
-            if (frm.ShowDialog() == DialogResult.OK)
+            try
             {
-                using (var db = new Data.DbCtx())
+                var cam = CurrentCamera;
+                if (e.ColumnIndex == dgvcCamDeviceName.Index) // 2klik na ime kamere -> edit podataka
                 {
-                    var cam = db.Cameras.Find(selCam.IdCam);
-                    if (cam == null)
-                        return;
-                    selCam.DeviceName = cam.DeviceName = frm.DeviceName;
-                    selCam.IpLastNum = cam.IpLastNum = frm.IpLastNum;
-                    db.SaveChanges();
+                    var frm = new FrmNewCamera(cam.DeviceName, cam.IpLastNum);
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        using (var db = new Data.DbCtx())
+                        {
+                            var c = db.Cameras.Find(cam.IdCam);
+                            if (c == null)
+                                return;
+                            cam.DeviceName = c.DeviceName = frm.DeviceName;
+                            cam.IpLastNum = c.IpLastNum = frm.IpLastNum;
+                            db.SaveChanges();
+                        }
+                        DgvCamerasDataRefresh();
+                    }
                 }
-                DgvCamerasDataRefresh();
+                if (e.ColumnIndex == dgvcCamIpAddress.Index) // 2klik na IP adresu -> pokretanje web app
+                    Utils.GoToLink($"http://{cam.IpAddress}");
             }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Camera"); }
         }
 
         private Camera CurrentCamera
@@ -255,7 +260,7 @@ namespace SurveillanceCamWinApp.Forms
                 DateDir.Parse(GetSelectedCameras().First(), resp);
                 DgvDateDirsDataRefresh();
             }
-            catch (Exception ex) { Utils.ShowMbox(ex, "Get Dirs"); }
+            catch (Exception ex) { Logger.AddToLog("Get Dirs: " + ex.Message); }
         }
 
         private void BtnGetFiles_Click(object sender, EventArgs e)
@@ -298,9 +303,9 @@ namespace SurveillanceCamWinApp.Forms
         {
             try
             {
-                var dd = CurrentDateDir;
-                if (dd != null)
-                    System.Diagnostics.Process.Start(dd.LocalDirPath);
+                if (e.ColumnIndex == -1 || e.ColumnIndex == 0) // 2klik na heder reda ili datum
+                    if (CurrentDateDir != null)
+                        System.Diagnostics.Process.Start(CurrentDateDir.LocalDirPath);
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Open Local Folder"); }
         }
@@ -417,8 +422,6 @@ namespace SurveillanceCamWinApp.Forms
 
         private void CtxItemDelBoth_Click(object sender, EventArgs e)
         {
-            // CurrentDateDir.ImageFiles.Remove(CurrentImageFile);
-
             var images = ctxMenu.SourceControl == dgvImages;
             if (Utils.ShowMboxYesNo("Are you sure?", "Local Deletion") != DialogResult.Yes)
                 return;
@@ -458,6 +461,19 @@ namespace SurveillanceCamWinApp.Forms
             {
                 Utils.ShowMbox(ex, $"Delete {(images ? "Images" : "Folders")} Completely");
             }
+        }
+
+        private void DgvDateDirs_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.ColumnIndex == 0)
+            {
+                // TODO bilo bi dobro da se red na koji sam desno-kliknuo selektuje
+            }
+        }
+
+        private void BtnStatusesAll_ButtonClick(object sender, EventArgs e)
+        {
+            Utils.ShowMbox(string.Join(Environment.NewLine, Logger.Statuses), "All Statuses");
         }
     }
 }

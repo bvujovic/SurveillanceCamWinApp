@@ -161,6 +161,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AppData.cs" />
+    <Compile Include="Controls\UcStatusLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\UcStatusLabel.Designer.cs">
+      <DependentUpon>UcStatusLabel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data\Models\DateDir.cs" />
     <Compile Include="Classes\Enums.cs" />
     <Compile Include="Classes\Logger.cs" />

@@ -1,5 +1,5 @@
-  + brisanje lokalno i na kameri
-  - git push
   - refakt koda za brisanje slika
-  - odvajanje koda za brisanje slika u poseban fajl/klasu (ImageOps)
+	- odvajanje koda za brisanje slika u poseban fajl/klasu (ImageOps)
   - UcSnapShot
+  ? keepAlive: svakih npr. 90sec cimnuti kameru tako da ne ode na sleep. check box
+	Ili neka web app ima opciju keepAlive/stayAwake - to je bolje kada predjem da kucam kôd

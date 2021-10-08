@@ -36,9 +36,15 @@ namespace SurveillanceCamWinApp.Classes
             {
                 using (var sw = new StreamWriter(Path.Combine(AppData.RootImageFolder, fileName), true))
                     sw.WriteLine($"{DateTime.Now.ToString(Utils.DatumVremeSveFormat)} - {msg}\r\n");
+                AddedToLog?.Invoke(null, msg);
+                Statuses.Add(msg);
             }
             catch { }
         }
+
+        public static event EventHandler<string> AddedToLog;
+
+        public static List<string> Statuses { get; private set; } = new List<string>();
 
         /// <summary>U konzoli prikazuje vreme (sec:ms) nekog dogadjaja.</summary>
         public static void OutputEventTime(string eventName)
