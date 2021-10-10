@@ -36,6 +36,7 @@ namespace SurveillanceCamWinApp.Forms
                 DgvCamerasDataRefresh();
                 dgvDateDirs.AutoGenerateColumns = false;
                 dgvImages.AutoGenerateColumns = false;
+                dgvCameras.RowHeadersWidth = dgvDateDirs.RowHeadersWidth = dgvImages.RowHeadersWidth = 30;
 
                 Logger.AddedToLog += Logger_AddedToLog;
                 Downloader.Started += Downloader_Started;
@@ -45,7 +46,7 @@ namespace SurveillanceCamWinApp.Forms
         }
 
         private void Logger_AddedToLog(object sender, string e)
-            => lblStatus.Text = "Last Status: " + e;
+            => lblStatus.Text = e;
 
         private void Downloader_Finished(object sender, EventArgs e)
             => lblDownloader.BackColor = this.BackColor;
@@ -167,14 +168,18 @@ namespace SurveillanceCamWinApp.Forms
         {
             dgvImages.DataSource = null;
             var dd = CurrentDateDir;
-            if (dd != null)
+            // ovo sa Equals za kamere je sredjivanje pogresnog CurrentDateDir kad se promeni CurrentCamera
+            //B if (dd != null && dd.Camera.Equals(CurrentCamera))
+            if (IsCurrentDateDirValid)
             {
                 dd.ImageFiles.Sort();
                 dgvImages.DataSource = dd.ImageFiles;
             }
-            //if (dgvDateDirs.CurrentRow?.DataBoundItem is DateDir dateDir)
-            //    dgvImages.DataSource = dateDir.ImageFiles;
         }
+
+        /// <summary>Uvek ce biti true, osim kada tekuca kamera nema nijedan DateDir.</summary>
+        private bool IsCurrentDateDirValid
+            => CurrentDateDir?.Camera != null && CurrentDateDir.Camera.Equals(CurrentCamera);
 
         private void DgvCameras_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -282,21 +287,49 @@ namespace SurveillanceCamWinApp.Forms
 
         private void DgvDateDirs_SelectionChanged(object sender, EventArgs e)
         {
-            dgvImages.AutoGenerateColumns = false;
-            DgvImagesDataRefresh();
+            try
+            {
+                dgvImages.AutoGenerateColumns = false;
+                DgvImagesDataRefresh();
+
+                var dd = CurrentDateDir;
+                if (dd != null)
+                {
+                    var images = dd.ImageFiles.Where(it => it.ExistsLocally);
+                    if (IsCurrentDateDirValid && images.Count() > 0)
+                        ucTimeInterval.SetInterval
+                            (images.First().DateTime, images.Last().DateTime);
+                    else
+                    {
+                        var date = IsCurrentDateDirValid ? dd.Date : DateTime.Today;
+                        ucTimeInterval.SetInterval
+                            (date, new DateTime(date.Year, date.Month, date.Day, 0, 0, 0));
+                    }
+                }
+            }
+            catch (Exception ex) { Utils.ShowMbox(ex, "DateDirs - Selection Change"); }
         }
+
+        //B
+        //private void UcTimeInterval_IntervalChanged(object sender, EventArgs e)
+        //{
+        //    //* test selektovanja jedne celije u gridu
+        //    if (dgvDateDirs.Rows.Count > 0)
+        //            dgvDateDirs.CurrentCell = dgvDateDirs.Rows[0].Cells[0];
+        //}
 
         private void DgvDateDirs_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             var dd = CurrentDateDir;
             if (dd == null)
                 return;
-            if (e.ColumnIndex == dgvcDateDirsDL.Index)
+            if (e.ColumnIndex == dgvcDateDirsDL.Index) // DL svih slika za datum
                 Downloader.AddDownload(dd);
-            if (e.ColumnIndex == dgvcDateDirImgSDC.Index)
-                Downloader.AddDownload(new CamDate(CurrentCamera, CurrentDateDir.Date));
-            if (e.ColumnIndex == dgvcDateDirImgLocal.Index)
-                CurrentDateDir.ImgCountLocal = CurrentDateDir.ImageFiles.Count(it => it.ExistsLocally);
+            if (e.ColumnIndex == dgvcDateDirImgSDC.Index) // DL naziva slika za datum
+                Downloader.AddDownload(new CamDate(CurrentCamera, dd.Date));
+            if (e.ColumnIndex == dgvcDateDirImgLocal.Index) // refresh broja slika u lokalu
+                //B dd.ImgCountLocal = dd.ImageFiles.Count(it => it.ExistsLocally);
+                dd.CalcImgCountLocal();
         }
 
         private void DgvDateDirs_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -310,19 +343,10 @@ namespace SurveillanceCamWinApp.Forms
             catch (Exception ex) { Utils.ShowMbox(ex, "Open Local Folder"); }
         }
 
-        private void BtnDelDateDir_Click(object sender, EventArgs e)
+        private void DgvImages_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            try
-            {
-                var dd = CurrentDateDir;
-                var cam = CurrentCamera;
-                if (dd != null && cam != null)
-                {
-                    cam.DateDirs.Remove(dd);
-                    DgvDateDirsDataRefresh();
-                }
-            }
-            catch (Exception ex) { Utils.ShowMbox(ex, "Delete Date"); }
+            if (e.ColumnIndex == dgvcImagesDL.Index)
+                Downloader.AddDownload(CurrentImageFile);
         }
 
         private void DgvImages_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -354,14 +378,18 @@ namespace SurveillanceCamWinApp.Forms
         private void DgvImages_RowCountChanged()
             => lblImagesRowCount.Text = $"Images Count: {dgvImages.RowCount}";
 
-        public static void DelImage(ImageFile img)
+        #region BrisanjeSlika
+
+        /// <summary>Brisanje slike/fajla na kameri.</summary>
+        public static void CamDelImage(ImageFile img)
         {
             var dd = img.DateDir;
             var url = $"http://{dd.Camera.IpAddress}/delImg?img=/{dd.Name}/{img.Name}";
             WebRequest.Create(url).GetResponse();
         }
 
-        public static void DelFolder(DateDir dd)
+        /// <summary>Brisanje datuma/foldera na kameri.</summary>
+        public static void CamDelFolder(DateDir dd)
         {
             var url = $"http://{dd.Camera.IpAddress}/delFolder?folder={dd.Name}";
             WebRequest.Create(url).GetResponse();
@@ -369,39 +397,40 @@ namespace SurveillanceCamWinApp.Forms
 
         private void CtxItemDelRemote_Click(object sender, EventArgs e)
         {
-            var images = ctxMenu.SourceControl == dgvImages;
+            var areImages = ctxMenu.SourceControl == dgvImages;
             if (Utils.ShowMboxYesNo("Are you sure?", "Remote Deletion") != DialogResult.Yes)
                 return;
             try
             {
-                if (images) // brisanje slika na kameri
+                if (areImages) // brisanje slika na kameri
                 {
                     if (dgvImages.SelectedRows.Count == 0)
-                        DelImage(CurrentImageFile);
+                        CamDelImage(CurrentImageFile);
                     else
                         foreach (var img in GetSelectedImages())
-                            DelImage(img);
+                            CamDelImage(img);
                 }
                 else // brisanje foldera na kameri
                 {
-                    DelFolder(CurrentDateDir);
+                    CamDelFolder(CurrentDateDir);
                     foreach (var img in CurrentDateDir.ImageFiles)
                         img.ExistsOnSDC = false;
                 }
                 dgvImages.Refresh();
                 dgvDateDirs.Refresh();
             }
-            catch (Exception ex) { Utils.ShowMbox(ex, $"Delete {(images ? "Images" : "Folders")} On Cam"); }
+            catch (Exception ex) { Utils.ShowMbox(ex, $"Delete {(areImages ? "Images" : "Folders")} On Cam"); }
         }
 
         private void CtxItemDelLocal_Click(object sender, EventArgs e)
         {
-            var images = ctxMenu.SourceControl == dgvImages;
+            ///<summary>bris slika</summary>
+            var delImages = ctxMenu.SourceControl == dgvImages;
             if (Utils.ShowMboxYesNo("Are you sure?", "Local Deletion") != DialogResult.Yes)
                 return;
             try
             {
-                if (images) // brisanje slika lokalno
+                if (delImages) // brisanje slika lokalno
                 {
                     if (dgvImages.SelectedRows.Count == 0)
                         System.IO.File.Delete(CurrentImageFile.LocalImagePath);
@@ -409,38 +438,39 @@ namespace SurveillanceCamWinApp.Forms
                         foreach (var img in GetSelectedImages())
                             System.IO.File.Delete(img.LocalImagePath);
                     CurrentDateDir.CalcImgCountLocal();
-                    dgvImages.Refresh();
                 }
                 else // brisanje foldera lokalno
                 {
                     System.IO.Directory.Delete(CurrentDateDir.LocalDirPath, true);
                 }
+
+                dgvImages.Refresh();
                 dgvDateDirs.Refresh();
             }
-            catch (Exception ex) { Utils.ShowMbox(ex, $"Delete {(images ? "Images" : "Folders")} Locally"); }
+            catch (Exception ex) { Utils.ShowMbox(ex, $"Delete {(delImages ? "Images" : "Folders")} Locally"); }
         }
 
         private void CtxItemDelBoth_Click(object sender, EventArgs e)
         {
-            var images = ctxMenu.SourceControl == dgvImages;
-            if (Utils.ShowMboxYesNo("Are you sure?", "Local Deletion") != DialogResult.Yes)
+            var areImages = ctxMenu.SourceControl == dgvImages;
+            if (Utils.ShowMboxYesNo("Are you sure?", "Local&Remote Deletion") != DialogResult.Yes)
                 return;
             try
             {
-                if (images) // brisanje slika potpuno
+                if (areImages) // brisanje slika potpuno
                 {
                     if (dgvImages.SelectedRows.Count == 0)
                     {
                         System.IO.File.Delete(CurrentImageFile.LocalImagePath);
-                        DelImage(CurrentImageFile);
+                        CamDelImage(CurrentImageFile);
                         CurrentDateDir.ImageFiles.Remove(CurrentImageFile);
-                        DgvImagesDataRefresh();
+                        //B DgvImagesDataRefresh();
                     }
                     else
                         foreach (var img in GetSelectedImages())
                         {
                             System.IO.File.Delete(img.LocalImagePath);
-                            DelImage(img);
+                            CamDelImage(img);
                             CurrentDateDir.ImageFiles.Remove(img);
                         }
                     CurrentDateDir.CalcImgCountLocal();
@@ -450,8 +480,9 @@ namespace SurveillanceCamWinApp.Forms
                 else // brisanje foldera potpuno
                 {
                     var dd = CurrentDateDir;
-                    System.IO.Directory.Delete(dd.LocalDirPath, true);
-                    DelFolder(dd);
+                    if (System.IO.Directory.Exists(dd.LocalDirPath))
+                        System.IO.Directory.Delete(dd.LocalDirPath, true);
+                    CamDelFolder(dd);
                     dd.Camera.DateDirs.Remove(dd);
                     DgvDateDirsDataRefresh();
                 }
@@ -459,9 +490,11 @@ namespace SurveillanceCamWinApp.Forms
             }
             catch (Exception ex)
             {
-                Utils.ShowMbox(ex, $"Delete {(images ? "Images" : "Folders")} Completely");
+                Utils.ShowMbox(ex, $"Delete {(areImages ? "Images" : "Folders")} Completely");
             }
         }
+
+        #endregion
 
         private void DgvDateDirs_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -471,9 +504,7 @@ namespace SurveillanceCamWinApp.Forms
             }
         }
 
-        private void BtnStatusesAll_ButtonClick(object sender, EventArgs e)
-        {
-            Utils.ShowMbox(string.Join(Environment.NewLine, Logger.Statuses), "All Statuses");
-        }
+        private void BtnStatusesAll_Click(object sender, EventArgs e)
+            => MessageBox.Show(string.Join(Environment.NewLine, Logger.Statuses), "All Statuses");
     }
 }

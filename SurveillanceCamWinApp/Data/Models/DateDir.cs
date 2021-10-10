@@ -54,7 +54,6 @@ namespace SurveillanceCamWinApp.Data.Models
 
         public DateTime Date => DateTime.Parse(Name);
 
-        // public int? ImgCountSDC { get; set; }
         private int? imgCountSDC;
         /// <summary>Broj slika na SD kartici.</summary>
         public int? ImgCountSDC

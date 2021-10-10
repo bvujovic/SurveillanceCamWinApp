@@ -31,10 +31,11 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label label1;
             System.Windows.Forms.Label label2;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.ToolStripStatusLabel lblStatusCaption;
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnDL1pic = new System.Windows.Forms.Button();
             this.btnImagesFolderBrowse = new System.Windows.Forms.Button();
             this.txtRootImageFolder = new System.Windows.Forms.TextBox();
@@ -64,22 +65,22 @@
             this.dgvcImagesExistsOnSDC = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvcImagesExistsLocally = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgvcImagesDL = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnDelDateDir = new System.Windows.Forms.Button();
             this.lblDownloader = new System.Windows.Forms.Label();
             this.lblDatesRowCount = new System.Windows.Forms.Label();
             this.lblImagesRowCount = new System.Windows.Forms.Label();
-            this.ucSnapShot1 = new SurveillanceCamWinApp.F.ImagePreview.UcSnapShot();
-            this.ucTimeInterval1 = new SurveillanceCamWinApp.F.ImagePreview.UcTimeInterval();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.lblStatus = new Controls.UcStatusLabel();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.btnStatusesAll = new System.Windows.Forms.ToolStripSplitButton();
+            this.lblStatus = new SurveillanceCamWinApp.Controls.UcStatusLabel();
+            this.ucSnapShot1 = new SurveillanceCamWinApp.F.ImagePreview.UcSnapShot();
+            this.ucTimeInterval = new SurveillanceCamWinApp.F.ImagePreview.UcTimeInterval();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
+            lblStatusCaption = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCameras)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDateDirs)).BeginInit();
             this.ctxMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvImages)).BeginInit();
-            this.statusStrip1.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -101,6 +102,12 @@
             label2.Size = new System.Drawing.Size(80, 20);
             label2.TabIndex = 9;
             label2.Text = "Cameras";
+            // 
+            // lblStatusCaption
+            // 
+            lblStatusCaption.Name = "lblStatusCaption";
+            lblStatusCaption.Size = new System.Drawing.Size(69, 17);
+            lblStatusCaption.Text = "Last Status: ";
             // 
             // btnDL1pic
             // 
@@ -173,7 +180,7 @@
             this.dgvCameras.Location = new System.Drawing.Point(12, 32);
             this.dgvCameras.Name = "dgvCameras";
             this.dgvCameras.ReadOnly = true;
-            this.dgvCameras.RowHeadersWidth = 4;
+            this.dgvCameras.RowHeadersWidth = 22;
             this.dgvCameras.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCameras.Size = new System.Drawing.Size(443, 150);
             this.dgvCameras.TabIndex = 8;
@@ -269,9 +276,9 @@
             // 
             this.dgvcDateDirImgSDC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.dgvcDateDirImgSDC.DataPropertyName = "ImgCountSDC";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.NullValue = "?";
-            this.dgvcDateDirImgSDC.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.NullValue = "?";
+            this.dgvcDateDirImgSDC.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvcDateDirImgSDC.HeaderText = "CAM";
             this.dgvcDateDirImgSDC.Name = "dgvcDateDirImgSDC";
             this.dgvcDateDirImgSDC.ReadOnly = true;
@@ -284,9 +291,9 @@
             // 
             this.dgvcDateDirImgLocal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.dgvcDateDirImgLocal.DataPropertyName = "ImgCountLocal";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.NullValue = "?";
-            this.dgvcDateDirImgLocal.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.NullValue = "?";
+            this.dgvcDateDirImgLocal.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvcDateDirImgLocal.HeaderText = "Local";
             this.dgvcDateDirImgLocal.Name = "dgvcDateDirImgLocal";
             this.dgvcDateDirImgLocal.ReadOnly = true;
@@ -298,9 +305,9 @@
             // dgvcDateDirsDL
             // 
             this.dgvcDateDirsDL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.NullValue = "ↆ";
-            this.dgvcDateDirsDL.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.NullValue = "ↆ";
+            this.dgvcDateDirsDL.DefaultCellStyle = dataGridViewCellStyle11;
             this.dgvcDateDirsDL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dgvcDateDirsDL.HeaderText = "DL";
             this.dgvcDateDirsDL.Name = "dgvcDateDirsDL";
@@ -381,6 +388,7 @@
             this.dgvImages.RowHeadersWidth = 22;
             this.dgvImages.Size = new System.Drawing.Size(443, 159);
             this.dgvImages.TabIndex = 15;
+            this.dgvImages.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvImages_CellClick);
             this.dgvImages.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvImages_CellDoubleClick);
             this.dgvImages.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DgvImages_RowsAdded);
             this.dgvImages.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.DgvImages_RowsRemoved);
@@ -421,9 +429,9 @@
             // dgvcImagesDL
             // 
             this.dgvcImagesDL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.NullValue = "ↆ";
-            this.dgvcImagesDL.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.NullValue = "ↆ";
+            this.dgvcImagesDL.DefaultCellStyle = dataGridViewCellStyle12;
             this.dgvcImagesDL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dgvcImagesDL.HeaderText = "DL";
             this.dgvcImagesDL.Name = "dgvcImagesDL";
@@ -431,16 +439,6 @@
             this.dgvcImagesDL.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvcImagesDL.ToolTipText = "Download image";
             this.dgvcImagesDL.Width = 31;
-            // 
-            // btnDelDateDir
-            // 
-            this.btnDelDateDir.Location = new System.Drawing.Point(283, 440);
-            this.btnDelDateDir.Name = "btnDelDateDir";
-            this.btnDelDateDir.Size = new System.Drawing.Size(75, 25);
-            this.btnDelDateDir.TabIndex = 16;
-            this.btnDelDateDir.Text = "Delete";
-            this.btnDelDateDir.UseVisualStyleBackColor = true;
-            this.btnDelDateDir.Click += new System.EventHandler(this.BtnDelDateDir_Click);
             // 
             // lblDownloader
             // 
@@ -470,41 +468,17 @@
             this.lblImagesRowCount.TabIndex = 19;
             this.lblImagesRowCount.Text = "Images Count: /";
             // 
-            // ucSnapShot1
+            // statusStrip
             // 
-            this.ucSnapShot1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucSnapShot1.ImageFile = null;
-            this.ucSnapShot1.Location = new System.Drawing.Point(634, 389);
-            this.ucSnapShot1.Margin = new System.Windows.Forms.Padding(4);
-            this.ucSnapShot1.Name = "ucSnapShot1";
-            this.ucSnapShot1.Size = new System.Drawing.Size(200, 185);
-            this.ucSnapShot1.TabIndex = 21;
-            // 
-            // ucTimeInterval1
-            // 
-            this.ucTimeInterval1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucTimeInterval1.Location = new System.Drawing.Point(514, 254);
-            this.ucTimeInterval1.Margin = new System.Windows.Forms.Padding(4);
-            this.ucTimeInterval1.Name = "ucTimeInterval1";
-            this.ucTimeInterval1.Size = new System.Drawing.Size(284, 28);
-            this.ucTimeInterval1.TabIndex = 20;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnStatusesAll,
+            lblStatusCaption,
             this.lblStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 676);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1067, 22);
-            this.statusStrip1.TabIndex = 22;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(74, 17);
-            this.lblStatus.Text = "Last Status: /";
+            this.statusStrip.Location = new System.Drawing.Point(0, 676);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1067, 22);
+            this.statusStrip.TabIndex = 22;
+            this.statusStrip.Text = "statusStrip1";
             // 
             // btnStatusesAll
             // 
@@ -516,20 +490,45 @@
             this.btnStatusesAll.Text = "All Statuses";
             this.btnStatusesAll.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.btnStatusesAll.ToolTipText = "Display All Statuses";
-            this.btnStatusesAll.ButtonClick += new System.EventHandler(this.BtnStatusesAll_ButtonClick);
+            this.btnStatusesAll.Click += new System.EventHandler(this.BtnStatusesAll_Click);
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.BackColor = System.Drawing.SystemColors.Control;
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(12, 17);
+            this.lblStatus.Text = "/";
+            // 
+            // ucSnapShot1
+            // 
+            this.ucSnapShot1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSnapShot1.ImageFile = null;
+            this.ucSnapShot1.Location = new System.Drawing.Point(634, 389);
+            this.ucSnapShot1.Margin = new System.Windows.Forms.Padding(4);
+            this.ucSnapShot1.Name = "ucSnapShot1";
+            this.ucSnapShot1.Size = new System.Drawing.Size(200, 185);
+            this.ucSnapShot1.TabIndex = 21;
+            // 
+            // ucTimeInterval
+            // 
+            this.ucTimeInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucTimeInterval.Location = new System.Drawing.Point(514, 254);
+            this.ucTimeInterval.Margin = new System.Windows.Forms.Padding(4);
+            this.ucTimeInterval.Name = "ucTimeInterval";
+            this.ucTimeInterval.Size = new System.Drawing.Size(284, 28);
+            this.ucTimeInterval.TabIndex = 20;
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 698);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.ucSnapShot1);
-            this.Controls.Add(this.ucTimeInterval1);
+            this.Controls.Add(this.ucTimeInterval);
             this.Controls.Add(this.lblImagesRowCount);
             this.Controls.Add(this.lblDatesRowCount);
             this.Controls.Add(this.lblDownloader);
-            this.Controls.Add(this.btnDelDateDir);
             this.Controls.Add(this.dgvImages);
             this.Controls.Add(this.dgvDateDirs);
             this.Controls.Add(this.btnGetFiles);
@@ -558,8 +557,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvDateDirs)).EndInit();
             this.ctxMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvImages)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -592,17 +591,16 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvcImagesExistsOnSDC;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dgvcImagesExistsLocally;
         private System.Windows.Forms.DataGridViewButtonColumn dgvcImagesDL;
-        private System.Windows.Forms.Button btnDelDateDir;
         private System.Windows.Forms.Label lblDownloader;
         private System.Windows.Forms.Label lblDatesRowCount;
         private System.Windows.Forms.Label lblImagesRowCount;
-        private F.ImagePreview.UcTimeInterval ucTimeInterval1;
+        private F.ImagePreview.UcTimeInterval ucTimeInterval;
         private F.ImagePreview.UcSnapShot ucSnapShot1;
         private System.Windows.Forms.ContextMenuStrip ctxMenu;
         private System.Windows.Forms.ToolStripMenuItem ctxItemDelRemote;
         private System.Windows.Forms.ToolStripMenuItem ctxItemDelLocal;
         private System.Windows.Forms.ToolStripMenuItem ctxItemDelBoth;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private Controls.UcStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripSplitButton btnStatusesAll;
     }

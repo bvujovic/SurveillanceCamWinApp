@@ -63,6 +63,13 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             }
         }
 
+        public void SetInterval(DateTime start, DateTime end)
+        {
+            dtpDate.Value = start.Date;
+            dtpTimeStart.Value = start;
+            dtpTimeEnd.Value = end;
+        }
+
         //TODO mozda pored dtp-ova prikazati duzinu intervala u hh:mm
     }
 }

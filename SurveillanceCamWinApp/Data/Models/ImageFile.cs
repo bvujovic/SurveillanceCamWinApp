@@ -71,6 +71,26 @@ namespace SurveillanceCamWinApp.Data.Models
 
         //B public bool CheckIfExistsLocally => System.IO.File.Exists(LocalImagePath);
 
+        /// <summary>Vraca datum/vreme slike na osnovu njenog DateDir-a i naziva.</summary>
+        public DateTime DateTime
+        {
+            get
+            {
+                int h, m, s = 0;
+                var parts = Name.Split(new char[] { '.' });
+                if (parts.Length >= 3 && parts.Length <= 4) // hh.mm.jpg ili hh.mm.ss.jpg
+                {
+                    h = int.Parse(parts[0]);
+                    m = int.Parse(parts[1]);
+                    if (parts.Length == 4)
+                        s = int.Parse(parts[2]);
+                }
+                else
+                    throw new Exception($"Image name ({Name}) is not in good format: 'hh.mm.jpg' or 'hh.mm.ss.jpg'.");
+                return new DateTime(DateDir.Date.Year, DateDir.Date.Month, DateDir.Date.Day, h, m, s);
+            }
+        }
+
         public override string ToString()
             => $"{Name}";
 

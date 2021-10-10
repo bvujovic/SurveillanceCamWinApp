@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace SurveillanceCamWinApp.F.Download
             request.Timeout = 3000;
             using (var response = (HttpWebResponse)request.GetResponse())
             using (var stream = response.GetResponseStream())
-            using (var reader = new System.IO.StreamReader(stream))
+            using (var reader = new StreamReader(stream))
                 return await reader.ReadToEndAsync();
         }
 
@@ -42,17 +43,29 @@ namespace SurveillanceCamWinApp.F.Download
             var dd = img.DateDir;
             //          http://192.168.0.60/sdCardImg?img=/2021-08-21/03.46.36.jpg
             var url = $"http://{dd.Camera.IpAddress}/sdCardImg?img=/{dd.Name}/{img.Name}";
-            Logger.OutputEventTime($"GetImage beg: {img.Name}");
-            using (var client = new WebClient())
-                await client.DownloadFileTaskAsync(new Uri(url), img.LocalImagePath);
-            Logger.OutputEventTime($"GetImage end: {img.Name}");
+            //T Logger.OutputEventTime($"GetImage beg: {img.Name}");
+            try
+            {
+                using (var client = new WebClient())
+                    await client.DownloadFileTaskAsync(new Uri(url), img.LocalImagePath);
+                var cam = img?.DateDir?.Camera;
+                if (cam != null)
+                    cam.LastImageDL = DateTime.Now;
+            }
+            catch 
+            {
+                var fi = new FileInfo(img.LocalImagePath);
+                if (File.Exists(img.LocalImagePath) && fi.Length == 0)
+                    File.Delete(img.LocalImagePath);
+                throw;
+            }
+            //T Logger.OutputEventTime($"GetImage end: {img.Name}");
         }
 
         public static async Task GetDateDir(DateDir dateDir)
         {
-            if (!System.IO.Directory.Exists(dateDir.LocalDirPath))
-                System.IO.Directory.CreateDirectory(dateDir.LocalDirPath);
-            // pozivanje GetImage() za sve slike
+            if (!Directory.Exists(dateDir.LocalDirPath))
+                Directory.CreateDirectory(dateDir.LocalDirPath);
             foreach (var img in dateDir.ImageFiles)
                 await GetImage(img);
         }
@@ -76,7 +89,6 @@ namespace SurveillanceCamWinApp.F.Download
                 downloads.Add(new CamDate(dd.Camera, DateTime.Parse(dd.Name)));
 
             downloads.Add(input);
-            Console.WriteLine($"DLs count: {downloads.Count}");
             if (!InProgress)
             {
                 Started?.Invoke(input, EventArgs.Empty);
@@ -88,7 +100,7 @@ namespace SurveillanceCamWinApp.F.Download
         {
             var dl = downloads.First();
             downloads.RemoveAt(0);
-            Logger.OutputEventTime($"Download: {dl}");
+            //T Logger.OutputEventTime($"Download: {dl}");
             try
             {
                 if (dl is ImageFile img)
@@ -104,12 +116,8 @@ namespace SurveillanceCamWinApp.F.Download
                         ImageFile.Parse(cd.Camera.GetDateDir(cd.Date.Value), resp);
                 }
             }
-            catch (Exception ex)
-            {
-                //B Logger.OutputEventTime(ex.Message);
-                Logger.AddToLog("Downloader: " + ex.Message);
-            }
-            Logger.OutputEventTime($"Finished: {dl}");
+            catch (Exception ex) { Logger.AddToLog("Downloader: " + ex.Message); }
+            //T Logger.OutputEventTime($"Finished: {dl}");
             Finished?.Invoke(dl, EventArgs.Empty);
 
             //TODO razmisliti sta tacno oznacava Started i Finished
