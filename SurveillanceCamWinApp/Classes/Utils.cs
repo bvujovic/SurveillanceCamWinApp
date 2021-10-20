@@ -59,6 +59,8 @@ namespace SurveillanceCamWinApp.Classes
 
         // https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
         public const string VremeSamoSitnoFormat = "mm:ss.fff";
+        public const string VremeKrupnoFormat = "HH:mm";
+        public const string VremeFormat = "HH:mm:ss";
         public const string DatumFormat = "yyyy-MM-dd";
         public const string DatumVremeFormat = "yyyy-MM-dd HH:mm";
         public const string DatumVremeSveFormat = "yyyy-MM-dd HH:mm:ss.ff";

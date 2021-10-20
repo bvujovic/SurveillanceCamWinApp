@@ -1,4 +1,7 @@
   - UcSnapShot
+	+ napraviti jos jednu kameru sa nekoliko foldera i slika. 
+	- napraviti mehanizam selekcije slika (koja kamera/e, koji vremenski interval)
+	- za datu kameru/kamere i vreme, u UcSS prikazati sliku/slike
   - DateDir klasa. Odluciti kako se tacno izracunava broj lokalnih slika: broj fajlova u folderu ili 
 	ImageFiles.Count(it => it.ExistsLocally). Pogledati kako je uradjeno svojstvo ImgCountSDC.
   ? keepAlive: svakih npr. 90sec cimnuti kameru tako da ne ode na sleep. check box

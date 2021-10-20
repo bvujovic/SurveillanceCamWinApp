@@ -73,7 +73,9 @@ namespace SurveillanceCamWinApp.Forms
                 //Downloader.AddDownload(new CamDate(CurrentCamera, null));
                 //F.Download.Downloader.AddDownload(GetCurrentDateDir());
 
-                ucSnapShot1.ImageFile = CurrentImageFile;
+                //B ucSnapShot1.ImageFile = CurrentImageFile;
+
+                ucSnapShot1.SetImages(new List<ImageFile> { CurrentImageFile });
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Test Download"); }
         }
@@ -153,14 +155,25 @@ namespace SurveillanceCamWinApp.Forms
             dgvCameras.DataSource = AppData.Cameras;
         }
 
-        private void DgvDateDirsDataRefresh()
+        private void DgvDateDirsDataRefresh(bool saveCurrentPosition = false)
         {
+            // datum tekuceg DateDir-a - MinValue ako se ne pamti
+            var dtCur = (saveCurrentPosition && CurrentDateDir != null)
+                ? CurrentDateDir.Date : DateTime.MinValue;
+
             dgvDateDirs.DataSource = null;
             var cam = CurrentCamera;
             if (cam != null)
             {
                 cam.DateDirs.Sort();
                 dgvDateDirs.DataSource = cam.DateDirs;
+                if (dtCur != DateTime.MinValue) // ako je datum zapamcen...
+                    foreach (DataGridViewRow row in dgvDateDirs.Rows)
+                        if ((row.DataBoundItem as DateDir).Date == dtCur)
+                        { // ... i nadjen za datu kameru, tekuci red se postavlja na taj datum
+                            dgvDateDirs.CurrentCell = row.Cells[0];
+                            break;
+                        }
             }
         }
 
@@ -282,7 +295,7 @@ namespace SurveillanceCamWinApp.Forms
         private void DgvCameras_SelectionChanged(object sender, EventArgs e)
         {
             dgvDateDirs.AutoGenerateColumns = false;
-            DgvDateDirsDataRefresh();
+            DgvDateDirsDataRefresh(true);
         }
 
         private void DgvDateDirs_SelectionChanged(object sender, EventArgs e)

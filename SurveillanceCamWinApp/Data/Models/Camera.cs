@@ -23,6 +23,8 @@ namespace SurveillanceCamWinApp.Data.Models
             get { return deviceName; }
             set
             {
+                if (deviceName == value)
+                    return;
                 var currPath = Path.Combine(Classes.AppData.RootImageFolder, deviceName);
                 if (Directory.Exists(currPath))
                 {
