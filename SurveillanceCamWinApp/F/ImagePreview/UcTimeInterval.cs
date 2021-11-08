@@ -30,6 +30,7 @@ namespace SurveillanceCamWinApp.F.ImagePreview
         {
             // poc i kraj su u razl. danima ako je poc vreme vece od krajnjeg vremena
             diffDays = tStart.Hour * 60 + tStart.Minute > tEnd.Hour * 60 + tEnd.Minute;
+            lblDuration.Text = (IntervalEnd - IntervalStart).ToString();
             IntervalChanged?.Invoke(sender, e);
         }
         
@@ -63,6 +64,7 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             }
         }
 
+        /// <summary>Postavljanje vremenskog intervala u kontroli.</summary>
         public void SetInterval(DateTime start, DateTime end)
         {
             dtpDate.Value = start.Date;
@@ -70,6 +72,12 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             dtpTimeEnd.Value = end;
         }
 
-        //TODO mozda pored dtp-ova prikazati duzinu intervala u hh:mm
+        /// <summary>Da li je datum/vreme u vremenskom intervalu zadatom u kontroli.</summary>
+        public bool InInterval(DateTime dt)
+            => IntervalStart <= dt && dt <= IntervalEnd;
+
+        /// <summary>Da li je datum/vreme slike u vremenskom intervalu zadatom u kontroli.</summary>
+        public bool InInterval(Data.Models.ImageFile imageFile)
+            => InInterval(imageFile.DateTime);
     }
 }

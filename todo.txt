@@ -1,8 +1,10 @@
-  - UcSnapShot
-	+ napraviti jos jednu kameru sa nekoliko foldera i slika. 
-	- napraviti mehanizam selekcije slika (koja kamera/e, koji vremenski interval)
-	- za datu kameru/kamere i vreme, u UcSS prikazati sliku/slike
-  - DateDir klasa. Odluciti kako se tacno izracunava broj lokalnih slika: broj fajlova u folderu ili 
-	ImageFiles.Count(it => it.ExistsLocally). Pogledati kako je uradjeno svojstvo ImgCountSDC.
-  ? keepAlive: svakih npr. 90sec cimnuti kameru tako da ne ode na sleep. check box
-	Ili neka web app ima opciju keepAlive/stayAwake - to je bolje kada predjem da kucam kôd
+- UcSnapShot
+	+ napraviti mehanizam selekcije slika (koja kamera/e, koji vremenski interval)
+	+ za datu kameru/kamere i vreme, u UcSS prikazati sliku/slike
+	+ izracunavanje i postavljanje visine UcSS kontrole
+	- dodati mogucnost da se u UcSnapShot prikazu i sike koje nisu skinute na HD u vidu neke standradne
+		slike sa porukom "on cam" ili "download from cam" na koju se moze kliknuti za DL
+- DateDir klasa. Odluciti kako se tacno izracunava broj lokalnih slika: broj fajlova u folderu ili 
+ImageFiles.Count(it => it.ExistsLocally). Pogledati kako je uradjeno svojstvo ImgCountSDC.
+? keepAlive: svakih npr. 90sec cimnuti kameru tako da ne ode na sleep. check box
+Ili neka web app ima opciju keepAlive/stayAwake - to je bolje kada predjem da kucam kôd

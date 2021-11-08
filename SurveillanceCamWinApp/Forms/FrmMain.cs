@@ -21,11 +21,6 @@ namespace SurveillanceCamWinApp.Forms
         {
             try
             {
-                //T
-                //calendar.AddBoldedDate(DateTime.Now);
-                //calendar.AddBoldedDate(DateTime.Now.AddDays(2));
-                //calendar.UpdateBoldedDates();
-
                 AppData.LoadAppData();
 
                 if (AppData.RootImageFolder == null)
@@ -60,22 +55,32 @@ namespace SurveillanceCamWinApp.Forms
             catch (Exception ex) { Utils.ShowMbox(ex, "Saving Data..."); }
         }
 
-        private void BtnDL1pic_Click(object sender, EventArgs e)
+        private void BtnTest_Click(object sender, EventArgs e)
         {
             try
             {
-                //var testUrl = "https://github.com/bvujovic/SurveillanceCam/blob/master/data/webcam.png?raw=true";
-                //             http://192.168.0.60/sdCardImg?img=/2021-08-26/05.28.02.jpg
-                //var testUrl = "http://192.168.0.60/sdCardImg?img=/2021-08-21/03.46.36.jpg";
-                //await DownloadImageAsync(testUrl);
-                //Utils.ShowMbox("Kraj", "DownloadImageAsync()");
+                // kreiranje spiska ImageFiles za sel kamere i zadati interval
+                var ifs = new Dictionary<string, List<ImageFile>>(); // ime slike => ImageFiles
+                var date = ucTimeInterval.IntervalStart.Date;
+                foreach (var cam in GetSelectedCameras().OrderBy(it => it.IdCam))
+                    try
+                    {
+                        var dd = cam.GetDateDir(date);
+                        if (dd != null)
+                            foreach (var img in dd.ImageFiles)
+                            {
+                                if (ucTimeInterval.InInterval(img))
+                                    if (!ifs.ContainsKey(img.Name))
+                                        ifs.Add(img.Name, new List<ImageFile>() { img });
+                                    else
+                                        ifs[img.Name].Add(img);
+                            }
+                    }
+                    catch (Exception ex) { Utils.ShowMbox(ex, btnTest.Text); }
 
-                //Downloader.AddDownload(new CamDate(CurrentCamera, null));
-                //F.Download.Downloader.AddDownload(GetCurrentDateDir());
-
-                //B ucSnapShot1.ImageFile = CurrentImageFile;
-
-                ucSnapShot1.SetImages(new List<ImageFile> { CurrentImageFile });
+                F.ImagePreview.ImageViewOptions.MultiCamSelected = GetSelectedCameras().Count() > 1;
+                if (ifs.Count > 0)
+                    ucSnapShot1.SetImages(ifs.First().Value);
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Test Download"); }
         }
@@ -86,9 +91,7 @@ namespace SurveillanceCamWinApp.Forms
             {
                 var dialog = new FolderBrowserDialog { RootFolder = Environment.SpecialFolder.MyComputer };
                 if (dialog.ShowDialog() == DialogResult.OK)
-                {
                     txtRootImageFolder.Text = AppData.RootImageFolder = dialog.SelectedPath;
-                }
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Set Root Image Folder"); }
         }
@@ -231,16 +234,20 @@ namespace SurveillanceCamWinApp.Forms
         private ImageFile CurrentImageFile
             => dgvImages.CurrentRow?.DataBoundItem as ImageFile;
 
-        private IEnumerable<Camera> GetSelectedCameras()
-        {
-            if (dgvCameras.SelectedRows.Count == 0)
-                return Enumerable.Empty<Camera>();
+        //B
+        //private IEnumerable<Camera> GetSelectedCameras()
+        //{
+        //    if (dgvCameras.SelectedRows.Count == 0)
+        //        return Enumerable.Empty<Camera>();
+        //    var cams = new List<Camera>();
+        //    foreach (DataGridViewRow row in dgvCameras.SelectedRows)
+        //        cams.Add(row.DataBoundItem as Camera);
+        //    return cams;
+        //}
 
-            var cams = new List<Camera>();
-            foreach (DataGridViewRow row in dgvCameras.SelectedRows)
-                cams.Add(row.DataBoundItem as Camera);
-            return cams;
-        }
+        private IEnumerable<Camera> GetSelectedCameras()
+            => dgvCameras.SelectedRows.Cast<DataGridViewRow>().Select(it => it.DataBoundItem)
+                .Cast<Camera>();
 
         //TODO primeniti ovu foru sa Cast i sl na GetSelectedCameras() ako ne bude nekih gresaka
         private IEnumerable<ImageFile> GetSelectedImages()
@@ -281,15 +288,16 @@ namespace SurveillanceCamWinApp.Forms
             catch (Exception ex) { Logger.AddToLog("Get Dirs: " + ex.Message); }
         }
 
-        private void BtnGetFiles_Click(object sender, EventArgs e)
+        private void BtnGetImageFiles_Click(object sender, EventArgs e)
         {
             try
             {
-                var resp = ListSdCard(calendar.SelectionStart);
+                //??? var resp = ListSdCard(calendar.SelectionStart);
+                var resp = ListSdCard(CurrentDateDir.Date);
                 ImageFile.Parse(CurrentDateDir, resp);
                 DgvImagesDataRefresh();
             }
-            catch (Exception ex) { Utils.ShowMbox(ex, "Get Files"); }
+            catch (Exception ex) { Utils.ShowMbox(ex, btnGetImageFiles.Text); }
         }
 
         private void DgvCameras_SelectionChanged(object sender, EventArgs e)
@@ -305,31 +313,47 @@ namespace SurveillanceCamWinApp.Forms
                 dgvImages.AutoGenerateColumns = false;
                 DgvImagesDataRefresh();
 
-                var dd = CurrentDateDir;
-                if (dd != null)
+                // postavljanje inicijalnog intervala za odabrane kamere i datum (DateDir)
+
+                //HACK var cdd = dgvDateDirs.CurrentRow; uglavnom radi pri menjanju kamere, ali ne uvek
+                var dgvRow = (dgvDateDirs.SelectedCells.Count > 0)
+                    ? dgvDateDirs.Rows[dgvDateDirs.SelectedCells[0].RowIndex]
+                    : dgvDateDirs.CurrentRow;
+                if (dgvRow.DataBoundItem is DateDir cdd)
                 {
-                    var images = dd.ImageFiles.Where(it => it.ExistsLocally);
-                    if (IsCurrentDateDirValid && images.Count() > 0)
-                        ucTimeInterval.SetInterval
-                            (images.First().DateTime, images.Last().DateTime);
-                    else
+                    // za sve sel. kamere pronaci vreme prve sliku od prvih i vreme poslednje od poslednjih slika
+                    DateTime? dtMin = null;
+                    DateTime? dtMax = null;
+                    var date = cdd.Date;
+                    foreach (var cam in GetSelectedCameras())
                     {
-                        var date = IsCurrentDateDirValid ? dd.Date : DateTime.Today;
+                        var dd = cam.GetDateDir(date);
+                        if (dd == null)
+                            continue;
+                        var images = dd.ImageFiles.Where(it => it.ExistsLocally);
+                        if (images.Count() > 0)
+                        {
+                            var dt = images.Min(it => it.DateTime);
+                            if (!dtMin.HasValue || dt < dtMin.Value)
+                                dtMin = dt;
+                            dt = images.Max(it => it.DateTime);
+                            if (!dtMax.HasValue || dt > dtMax.Value)
+                                dtMax = dt;
+                        }
+                    }
+                    if (dtMin.HasValue && dtMax.HasValue)
+                        ucTimeInterval.SetInterval(dtMin.Value, dtMax.Value);
+                    else
                         ucTimeInterval.SetInterval
                             (date, new DateTime(date.Year, date.Month, date.Day, 0, 0, 0));
-                    }
                 }
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "DateDirs - Selection Change"); }
         }
 
-        //B
-        //private void UcTimeInterval_IntervalChanged(object sender, EventArgs e)
-        //{
-        //    //* test selektovanja jedne celije u gridu
-        //    if (dgvDateDirs.Rows.Count > 0)
-        //            dgvDateDirs.CurrentCell = dgvDateDirs.Rows[0].Cells[0];
-        //}
+        private void UcTimeInterval_IntervalChanged(object sender, EventArgs e)
+        {
+        }
 
         private void DgvDateDirs_CellClick(object sender, DataGridViewCellEventArgs e)
         {

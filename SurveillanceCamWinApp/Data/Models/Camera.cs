@@ -61,6 +61,7 @@ namespace SurveillanceCamWinApp.Data.Models
         public List<DateDir> DateDirs { get; set; } = new List<DateDir>();
         //public ICollection<DateDir> DateDirs { get; set; }
 
+        /// <summary>DateDir za dati datum, ako postoji. null ako ne postoji.</summary>
         public DateDir GetDateDir(DateTime date)
             => DateDirs.FirstOrDefault(it => DateTime.Parse(it.Name) == date);
 

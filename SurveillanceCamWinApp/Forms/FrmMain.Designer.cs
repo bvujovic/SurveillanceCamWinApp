@@ -32,11 +32,11 @@
             System.Windows.Forms.Label label1;
             System.Windows.Forms.Label label2;
             System.Windows.Forms.ToolStripStatusLabel lblStatusCaption;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.btnDL1pic = new System.Windows.Forms.Button();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.btnTest = new System.Windows.Forms.Button();
             this.btnImagesFolderBrowse = new System.Windows.Forms.Button();
             this.txtRootImageFolder = new System.Windows.Forms.TextBox();
             this.btnRootImageFolderGoTo = new System.Windows.Forms.Button();
@@ -46,9 +46,8 @@
             this.dgvcCamDeviceName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcCamIpAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcCamLastImageDlStr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.calendar = new System.Windows.Forms.MonthCalendar();
             this.btnGetDirs = new System.Windows.Forms.Button();
-            this.btnGetFiles = new System.Windows.Forms.Button();
+            this.btnGetImageFiles = new System.Windows.Forms.Button();
             this.dgvDateDirs = new System.Windows.Forms.DataGridView();
             this.dgvcDateDirName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcDateDirImgSDC = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -109,15 +108,15 @@
             lblStatusCaption.Size = new System.Drawing.Size(69, 17);
             lblStatusCaption.Text = "Last Status: ";
             // 
-            // btnDL1pic
+            // btnTest
             // 
-            this.btnDL1pic.Location = new System.Drawing.Point(872, 86);
-            this.btnDL1pic.Name = "btnDL1pic";
-            this.btnDL1pic.Size = new System.Drawing.Size(91, 34);
-            this.btnDL1pic.TabIndex = 0;
-            this.btnDL1pic.Text = "DL 1 pic";
-            this.btnDL1pic.UseVisualStyleBackColor = true;
-            this.btnDL1pic.Click += new System.EventHandler(this.BtnDL1pic_Click);
+            this.btnTest.Location = new System.Drawing.Point(510, 60);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(91, 34);
+            this.btnTest.TabIndex = 0;
+            this.btnTest.Text = "Test";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.BtnTest_Click);
             // 
             // btnImagesFolderBrowse
             // 
@@ -211,12 +210,6 @@
             this.dgvcCamLastImageDlStr.Name = "dgvcCamLastImageDlStr";
             this.dgvcCamLastImageDlStr.ReadOnly = true;
             // 
-            // calendar
-            // 
-            this.calendar.Location = new System.Drawing.Point(510, 66);
-            this.calendar.Name = "calendar";
-            this.calendar.TabIndex = 10;
-            // 
             // btnGetDirs
             // 
             this.btnGetDirs.Location = new System.Drawing.Point(371, 186);
@@ -227,15 +220,15 @@
             this.btnGetDirs.UseVisualStyleBackColor = true;
             this.btnGetDirs.Click += new System.EventHandler(this.BtnGetDirs_Click);
             // 
-            // btnGetFiles
+            // btnGetImageFiles
             // 
-            this.btnGetFiles.Location = new System.Drawing.Point(364, 440);
-            this.btnGetFiles.Name = "btnGetFiles";
-            this.btnGetFiles.Size = new System.Drawing.Size(91, 25);
-            this.btnGetFiles.TabIndex = 13;
-            this.btnGetFiles.Text = "Get Images";
-            this.btnGetFiles.UseVisualStyleBackColor = true;
-            this.btnGetFiles.Click += new System.EventHandler(this.BtnGetFiles_Click);
+            this.btnGetImageFiles.Location = new System.Drawing.Point(364, 440);
+            this.btnGetImageFiles.Name = "btnGetImageFiles";
+            this.btnGetImageFiles.Size = new System.Drawing.Size(91, 25);
+            this.btnGetImageFiles.TabIndex = 13;
+            this.btnGetImageFiles.Text = "Get Images";
+            this.btnGetImageFiles.UseVisualStyleBackColor = true;
+            this.btnGetImageFiles.Click += new System.EventHandler(this.BtnGetImageFiles_Click);
             // 
             // dgvDateDirs
             // 
@@ -276,9 +269,9 @@
             // 
             this.dgvcDateDirImgSDC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.dgvcDateDirImgSDC.DataPropertyName = "ImgCountSDC";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.NullValue = "?";
-            this.dgvcDateDirImgSDC.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.NullValue = "?";
+            this.dgvcDateDirImgSDC.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvcDateDirImgSDC.HeaderText = "CAM";
             this.dgvcDateDirImgSDC.Name = "dgvcDateDirImgSDC";
             this.dgvcDateDirImgSDC.ReadOnly = true;
@@ -291,9 +284,9 @@
             // 
             this.dgvcDateDirImgLocal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.dgvcDateDirImgLocal.DataPropertyName = "ImgCountLocal";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.NullValue = "?";
-            this.dgvcDateDirImgLocal.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.NullValue = "?";
+            this.dgvcDateDirImgLocal.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvcDateDirImgLocal.HeaderText = "Local";
             this.dgvcDateDirImgLocal.Name = "dgvcDateDirImgLocal";
             this.dgvcDateDirImgLocal.ReadOnly = true;
@@ -305,9 +298,9 @@
             // dgvcDateDirsDL
             // 
             this.dgvcDateDirsDL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.NullValue = "ↆ";
-            this.dgvcDateDirsDL.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.NullValue = "ↆ";
+            this.dgvcDateDirsDL.DefaultCellStyle = dataGridViewCellStyle11;
             this.dgvcDateDirsDL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dgvcDateDirsDL.HeaderText = "DL";
             this.dgvcDateDirsDL.Name = "dgvcDateDirsDL";
@@ -429,9 +422,9 @@
             // dgvcImagesDL
             // 
             this.dgvcImagesDL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.NullValue = "ↆ";
-            this.dgvcImagesDL.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.NullValue = "ↆ";
+            this.dgvcImagesDL.DefaultCellStyle = dataGridViewCellStyle12;
             this.dgvcImagesDL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dgvcImagesDL.HeaderText = "DL";
             this.dgvcImagesDL.Name = "dgvcImagesDL";
@@ -443,7 +436,7 @@
             // lblDownloader
             // 
             this.lblDownloader.AutoSize = true;
-            this.lblDownloader.Location = new System.Drawing.Point(877, 149);
+            this.lblDownloader.Location = new System.Drawing.Point(643, 69);
             this.lblDownloader.Name = "lblDownloader";
             this.lblDownloader.Size = new System.Drawing.Size(81, 16);
             this.lblDownloader.TabIndex = 17;
@@ -482,6 +475,7 @@
             // 
             // btnStatusesAll
             // 
+            this.btnStatusesAll.BackColor = System.Drawing.SystemColors.Control;
             this.btnStatusesAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.btnStatusesAll.DropDownButtonWidth = 0;
             this.btnStatusesAll.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -512,11 +506,12 @@
             // ucTimeInterval
             // 
             this.ucTimeInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucTimeInterval.Location = new System.Drawing.Point(750, 200);
+            this.ucTimeInterval.Location = new System.Drawing.Point(510, 186);
             this.ucTimeInterval.Margin = new System.Windows.Forms.Padding(4);
             this.ucTimeInterval.Name = "ucTimeInterval";
-            this.ucTimeInterval.Size = new System.Drawing.Size(284, 28);
+            this.ucTimeInterval.Size = new System.Drawing.Size(534, 28);
             this.ucTimeInterval.TabIndex = 20;
+            this.ucTimeInterval.IntervalChanged += new System.EventHandler(this.UcTimeInterval_IntervalChanged);
             // 
             // FrmMain
             // 
@@ -531,9 +526,8 @@
             this.Controls.Add(this.lblDownloader);
             this.Controls.Add(this.dgvImages);
             this.Controls.Add(this.dgvDateDirs);
-            this.Controls.Add(this.btnGetFiles);
+            this.Controls.Add(this.btnGetImageFiles);
             this.Controls.Add(this.btnGetDirs);
-            this.Controls.Add(this.calendar);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(label2);
@@ -544,7 +538,7 @@
             this.Controls.Add(label1);
             this.Controls.Add(this.txtRootImageFolder);
             this.Controls.Add(this.btnImagesFolderBrowse);
-            this.Controls.Add(this.btnDL1pic);
+            this.Controls.Add(this.btnTest);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = global::SurveillanceCamWinApp.Properties.Resources.webcam;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -566,7 +560,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnDL1pic;
+        private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Button btnImagesFolderBrowse;
         private System.Windows.Forms.TextBox txtRootImageFolder;
         private System.Windows.Forms.Button btnRootImageFolderGoTo;
@@ -576,9 +570,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcCamDeviceName;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcCamIpAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcCamLastImageDlStr;
-        private System.Windows.Forms.MonthCalendar calendar;
         private System.Windows.Forms.Button btnGetDirs;
-        private System.Windows.Forms.Button btnGetFiles;
+        private System.Windows.Forms.Button btnGetImageFiles;
         private System.Windows.Forms.DataGridView dgvDateDirs;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;

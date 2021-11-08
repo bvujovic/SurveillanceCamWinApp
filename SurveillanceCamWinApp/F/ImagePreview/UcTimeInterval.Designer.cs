@@ -30,10 +30,13 @@ namespace SurveillanceCamWinApp.F.ImagePreview
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label2;
+            System.Windows.Forms.Label lblDurationCaption;
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.dtpTimeStart = new System.Windows.Forms.DateTimePicker();
             this.dtpTimeEnd = new System.Windows.Forms.DateTimePicker();
+            this.lblDuration = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
+            lblDurationCaption = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label2
@@ -46,12 +49,12 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             label2.TabIndex = 3;
             label2.Text = "-";
             // 
-            // dtpStartDate
+            // dtpDate
             // 
             this.dtpDate.CustomFormat = "dd MMM yyyy";
             this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpDate.Location = new System.Drawing.Point(3, 3);
-            this.dtpDate.Name = "dtpStartDate";
+            this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(114, 22);
             this.dtpDate.TabIndex = 1;
             this.dtpDate.ValueChanged += new System.EventHandler(this.Dtp_ValueChanged);
@@ -78,10 +81,32 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             this.dtpTimeEnd.TabIndex = 4;
             this.dtpTimeEnd.ValueChanged += new System.EventHandler(this.Dtp_ValueChanged);
             // 
+            // lblDurationCaption
+            // 
+            lblDurationCaption.AutoSize = true;
+            lblDurationCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            lblDurationCaption.Location = new System.Drawing.Point(297, 6);
+            lblDurationCaption.Name = "lblDurationCaption";
+            lblDurationCaption.Size = new System.Drawing.Size(62, 16);
+            lblDurationCaption.TabIndex = 5;
+            lblDurationCaption.Text = "duration: ";
+            // 
+            // lblDuration
+            // 
+            this.lblDuration.AutoSize = true;
+            this.lblDuration.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDuration.Location = new System.Drawing.Point(354, 6);
+            this.lblDuration.Name = "lblDuration";
+            this.lblDuration.Size = new System.Drawing.Size(12, 16);
+            this.lblDuration.TabIndex = 6;
+            this.lblDuration.Text = "/";
+            // 
             // UcTimeInterval
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblDuration);
+            this.Controls.Add(lblDurationCaption);
             this.Controls.Add(this.dtpTimeEnd);
             this.Controls.Add(label2);
             this.Controls.Add(this.dtpTimeStart);
@@ -89,7 +114,7 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UcTimeInterval";
-            this.Size = new System.Drawing.Size(284, 28);
+            this.Size = new System.Drawing.Size(453, 28);
             this.Load += new System.EventHandler(this.UcTimeInterval_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -101,5 +126,6 @@ namespace SurveillanceCamWinApp.F.ImagePreview
         private System.Windows.Forms.DateTimePicker dtpDate;
         private System.Windows.Forms.DateTimePicker dtpTimeStart;
         private System.Windows.Forms.DateTimePicker dtpTimeEnd;
+        private System.Windows.Forms.Label lblDuration;
     }
 }
