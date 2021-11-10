@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SurveillanceCamWinApp.Classes
 {
@@ -23,10 +21,6 @@ namespace SurveillanceCamWinApp.Classes
         public static void AddToLog(Exception ex)
         {
             var msg = ex.Message;
-            //B
-            //var apiex = ex as TO.APINGException;
-            //if (apiex != null)
-            //    msg = apiex.ErrorCode + ", details: " + apiex.ErrorDetails;
             AddToLog(msg + Environment.NewLine + ex.StackTrace);
         }
 
@@ -44,6 +38,7 @@ namespace SurveillanceCamWinApp.Classes
 
         public static event EventHandler<string> AddedToLog;
 
+        /// <summary>Statusne poruke koje se prikazuju na dnu glavnog prozora.</summary>
         public static List<string> Statuses { get; private set; } = new List<string>();
 
         /// <summary>U konzoli prikazuje vreme (sec:ms) nekog dogadjaja.</summary>

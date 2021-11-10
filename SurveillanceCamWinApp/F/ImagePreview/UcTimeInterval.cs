@@ -18,22 +18,41 @@ namespace SurveillanceCamWinApp.F.ImagePreview
 
         private void UcTimeInterval_Load(object sender, EventArgs e)
         {
+            RaisingIntervalChanged = false;
             // vremena se postavljaju na 00:00
             dtpTimeStart.Value = dtpTimeStart.MinDate;
             dtpTimeEnd.Value = dtpTimeEnd.MinDate;
+            RaisingIntervalChanged = true;
         }
 
         /// <summary>Pocetak ili kraj intervala su se upravo promenili.</summary>
         public event EventHandler IntervalChanged;
 
+        private bool raisingIntervalChanged;
+        /// <summary></summary>
+        private bool RaisingIntervalChanged
+        {
+            get { return raisingIntervalChanged; }
+            set
+            {
+                raisingIntervalChanged = value;
+                if (value)
+                    Dtp_ValueChanged(this, EventArgs.Empty);
+            }
+        }
+
+
         private void Dtp_ValueChanged(object sender, EventArgs e)
         {
-            // poc i kraj su u razl. danima ako je poc vreme vece od krajnjeg vremena
-            diffDays = tStart.Hour * 60 + tStart.Minute > tEnd.Hour * 60 + tEnd.Minute;
-            lblDuration.Text = (IntervalEnd - IntervalStart).ToString();
-            IntervalChanged?.Invoke(sender, e);
+            if (RaisingIntervalChanged)
+            {
+                // poc i kraj su u razl. danima ako je poc vreme vece od krajnjeg vremena
+                diffDays = tStart.Hour * 60 + tStart.Minute > tEnd.Hour * 60 + tEnd.Minute;
+                lblDuration.Text = (IntervalEnd - IntervalStart).ToString();
+                IntervalChanged?.Invoke(sender, e);
+            }
         }
-        
+
         /// <summary>Datum/vreme pocetka intervala.</summary>
         public DateTime IntervalStart
         {
@@ -67,9 +86,11 @@ namespace SurveillanceCamWinApp.F.ImagePreview
         /// <summary>Postavljanje vremenskog intervala u kontroli.</summary>
         public void SetInterval(DateTime start, DateTime end)
         {
+            RaisingIntervalChanged = false;
             dtpDate.Value = start.Date;
             dtpTimeStart.Value = start;
             dtpTimeEnd.Value = end;
+            RaisingIntervalChanged = true;
         }
 
         /// <summary>Da li je datum/vreme u vremenskom intervalu zadatom u kontroli.</summary>

@@ -29,15 +29,18 @@ namespace SurveillanceCamWinApp.F.ImagePreview
                 {
                     var pic = new PictureBox
                     {
-                        Image = new Bitmap(imageFiles.First().LocalImagePath),
+                        Image = new Bitmap(imgf.LocalImagePath),
+                        ImageLocation = imgf.LocalImagePath,
+                        Cursor = Cursors.Hand,
                         Dock = DockStyle.Top,
                         SizeMode = PictureBoxSizeMode.Zoom,
                     };
+                    pic.Click += Pic_Click;
                     var clh = (this.Width - 4) * pic.Image.Height / pic.Image.Width;
                     pic.Height = clh + 2;
                     Controls.Add(pic);
 
-                    if (ImageViewOptions.MultiCamSelected)
+                    if (ImagePreviewOptions.MultiCamSelected)
                         Controls.Add(new Label
                         {
                             Text = imgf.DateDir.Camera.DeviceName,
@@ -59,6 +62,16 @@ namespace SurveillanceCamWinApp.F.ImagePreview
                 this.dateTime = DateTime.MinValue;
                 lblTime.Text = "/";
             }
+        }
+
+        private void Pic_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var pic = sender as PictureBox;
+                System.Diagnostics.Process.Start(pic.ImageLocation);
+            }
+            catch (Exception ex) { Classes.Logger.AddToLog(ex); }
         }
     }
 }

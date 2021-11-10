@@ -201,12 +201,18 @@
       <DependentUpon>20210904013147_Init2.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\Migrations\DbCtxModelSnapshot.cs" />
-    <Compile Include="F\ImagePreview\ImageViewOptions.cs" />
+    <Compile Include="F\ImagePreview\ImagePreviewOptions.cs" />
     <Compile Include="F\ImagePreview\UcSnapShot.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="F\ImagePreview\UcSnapShot.Designer.cs">
       <DependentUpon>UcSnapShot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="F\ImagePreview\UcSnapShotPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="F\ImagePreview\UcSnapShotPanel.Designer.cs">
+      <DependentUpon>UcSnapShotPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="F\ImagePreview\UcTimeInterval.cs">
       <SubType>UserControl</SubType>
@@ -227,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="F\ImagePreview\UcSnapShot.resx">
       <DependentUpon>UcSnapShot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="F\ImagePreview\UcSnapShotPanel.resx">
+      <DependentUpon>UcSnapShotPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="F\ImagePreview\UcTimeInterval.resx">
       <DependentUpon>UcTimeInterval.cs</DependentUpon>

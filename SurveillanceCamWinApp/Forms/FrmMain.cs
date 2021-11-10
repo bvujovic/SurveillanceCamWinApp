@@ -41,7 +41,10 @@ namespace SurveillanceCamWinApp.Forms
         }
 
         private void Logger_AddedToLog(object sender, string e)
-            => lblStatus.Text = e;
+        {
+            lblStatus.Text = e;
+            btnStatusesAll.Visible = true;
+        }
 
         private void Downloader_Finished(object sender, EventArgs e)
             => lblDownloader.BackColor = this.BackColor;
@@ -59,28 +62,7 @@ namespace SurveillanceCamWinApp.Forms
         {
             try
             {
-                // kreiranje spiska ImageFiles za sel kamere i zadati interval
-                var ifs = new Dictionary<string, List<ImageFile>>(); // ime slike => ImageFiles
-                var date = ucTimeInterval.IntervalStart.Date;
-                foreach (var cam in GetSelectedCameras().OrderBy(it => it.IdCam))
-                    try
-                    {
-                        var dd = cam.GetDateDir(date);
-                        if (dd != null)
-                            foreach (var img in dd.ImageFiles)
-                            {
-                                if (ucTimeInterval.InInterval(img))
-                                    if (!ifs.ContainsKey(img.Name))
-                                        ifs.Add(img.Name, new List<ImageFile>() { img });
-                                    else
-                                        ifs[img.Name].Add(img);
-                            }
-                    }
-                    catch (Exception ex) { Utils.ShowMbox(ex, btnTest.Text); }
-
-                F.ImagePreview.ImageViewOptions.MultiCamSelected = GetSelectedCameras().Count() > 1;
-                if (ifs.Count > 0)
-                    ucSnapShot1.SetImages(ifs.First().Value);
+                
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Test Download"); }
         }
@@ -353,6 +335,31 @@ namespace SurveillanceCamWinApp.Forms
 
         private void UcTimeInterval_IntervalChanged(object sender, EventArgs e)
         {
+            try
+            {
+                // kreiranje spiska ImageFiles za sel kamere i zadati interval
+                var ifs = new Dictionary<string, List<ImageFile>>(); // ime slike (vreme) => ImageFiles
+                var date = ucTimeInterval.IntervalStart.Date;
+                foreach (var cam in GetSelectedCameras().OrderBy(it => it.IdCam))
+                    try
+                    {
+                        var dd = cam.GetDateDir(date);
+                        if (dd != null)
+                            foreach (var img in dd.ImageFiles)
+                            {
+                                if (ucTimeInterval.InInterval(img))
+                                    if (!ifs.ContainsKey(img.Name))
+                                        ifs.Add(img.Name, new List<ImageFile>() { img });
+                                    else
+                                        ifs[img.Name].Add(img);
+                            }
+                    }
+                    catch (Exception ex) { Logger.AddToLog(ex); }
+
+                F.ImagePreview.ImagePreviewOptions.MultiCamSelected = GetSelectedCameras().Count() > 1;
+                pnlSnapShots.SetImages(ifs);
+            }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Preview Images"); }
         }
 
         private void DgvDateDirs_CellClick(object sender, DataGridViewCellEventArgs e)
