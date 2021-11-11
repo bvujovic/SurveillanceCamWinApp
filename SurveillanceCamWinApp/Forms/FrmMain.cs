@@ -24,9 +24,7 @@ namespace SurveillanceCamWinApp.Forms
                 AppData.LoadAppData();
 
                 if (AppData.RootImageFolder == null)
-                    btnImagesFolderBrowse.PerformClick();
-                else
-                    txtRootImageFolder.Text = AppData.RootImageFolder;
+                    tsmiRootFolderSet.PerformClick();
                 dgvCameras.AutoGenerateColumns = false;
                 DgvCamerasDataRefresh();
                 dgvDateDirs.AutoGenerateColumns = false;
@@ -62,29 +60,9 @@ namespace SurveillanceCamWinApp.Forms
         {
             try
             {
-                
+
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Test Download"); }
-        }
-
-        private void BtnImagesFolderBrowse_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var dialog = new FolderBrowserDialog { RootFolder = Environment.SpecialFolder.MyComputer };
-                if (dialog.ShowDialog() == DialogResult.OK)
-                    txtRootImageFolder.Text = AppData.RootImageFolder = dialog.SelectedPath;
-            }
-            catch (Exception ex) { Utils.ShowMbox(ex, "Set Root Image Folder"); }
-        }
-
-        private void BtnRootImageFolderGoTo_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start(AppData.RootImageFolder);
-            }
-            catch (Exception ex) { Utils.ShowMbox(ex, "Show Image"); }
         }
 
         private void BtnNewCamera_Click(object sender, EventArgs e)
@@ -216,22 +194,10 @@ namespace SurveillanceCamWinApp.Forms
         private ImageFile CurrentImageFile
             => dgvImages.CurrentRow?.DataBoundItem as ImageFile;
 
-        //B
-        //private IEnumerable<Camera> GetSelectedCameras()
-        //{
-        //    if (dgvCameras.SelectedRows.Count == 0)
-        //        return Enumerable.Empty<Camera>();
-        //    var cams = new List<Camera>();
-        //    foreach (DataGridViewRow row in dgvCameras.SelectedRows)
-        //        cams.Add(row.DataBoundItem as Camera);
-        //    return cams;
-        //}
-
         private IEnumerable<Camera> GetSelectedCameras()
             => dgvCameras.SelectedRows.Cast<DataGridViewRow>().Select(it => it.DataBoundItem)
                 .Cast<Camera>();
 
-        //TODO primeniti ovu foru sa Cast i sl na GetSelectedCameras() ako ne bude nekih gresaka
         private IEnumerable<ImageFile> GetSelectedImages()
             => dgvImages.SelectedRows.Cast<DataGridViewRow>().Select(it => it.DataBoundItem)
                 .Cast<ImageFile>();
@@ -356,7 +322,7 @@ namespace SurveillanceCamWinApp.Forms
                     }
                     catch (Exception ex) { Logger.AddToLog(ex); }
 
-                F.ImagePreview.ImagePreviewOptions.MultiCamSelected = GetSelectedCameras().Count() > 1;
+                F.ImagePreview.UcSnapShotPanel.MultiCamSelected = GetSelectedCameras().Count() > 1;
                 pnlSnapShots.SetImages(ifs);
             }
             catch (Exception ex) { Utils.ShowMbox(ex, "Preview Images"); }
@@ -550,5 +516,46 @@ namespace SurveillanceCamWinApp.Forms
 
         private void BtnStatusesAll_Click(object sender, EventArgs e)
             => MessageBox.Show(string.Join(Environment.NewLine, Logger.Statuses), "All Statuses");
+
+        private void TsmiRootFolderSet_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var dialog = new FolderBrowserDialog { RootFolder = Environment.SpecialFolder.MyComputer };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                    AppData.RootImageFolder = dialog.SelectedPath;
+            }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Set Root Image Folder"); }
+        }
+
+        private void TsmiRootFolderOpen_Click(object sender, EventArgs e)
+        {
+            try { System.Diagnostics.Process.Start(AppData.RootImageFolder); }
+            catch (Exception ex) { Utils.ShowMbox(ex, "Show Image"); }
+        }
+
+        private void TsmiFlowLeftRight_Click(object sender, EventArgs e)
+        {
+            tsmiFlowLeftRight.Checked = true;
+            tsmiFlowTopBottom.Checked = false;
+            pnlSnapShots.FlowDirection = FlowDirection.LeftToRight;
+        }
+
+        private void TsmiFlowTopBottom_Click(object sender, EventArgs e)
+        {
+            tsmiFlowTopBottom.Checked = true;
+            tsmiFlowLeftRight.Checked = false;
+            pnlSnapShots.FlowDirection = FlowDirection.TopDown;
+        }
+
+        private void TsmiWrapThumbnails_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlSnapShots.WrapContents = tsmiWrapThumbnails.Checked;
+        }
+
+        private void TsmiThumbnailBorders_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlSnapShots.ThumbnailBorders = tsmiThumbnailBorders.Checked;
+        }
     }
 }

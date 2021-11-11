@@ -1,4 +1,5 @@
-﻿using SurveillanceCamWinApp.Data.Models;
+﻿using SurveillanceCamWinApp.Classes;
+using SurveillanceCamWinApp.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -21,7 +22,6 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             for (int i = Controls.Count - 1; i >= 0; i--)
                 if (Controls[i].Name != lblTime.Name)
                     Controls[i].Dispose();
-            //TODO bolje bi bilo da se ovo optimizuje tako da se ukinu samo one kontrole koje nisu potrebne
 
             if (imageFiles != null && imageFiles.Count() > 0) // ima slika
             {
@@ -34,13 +34,15 @@ namespace SurveillanceCamWinApp.F.ImagePreview
                         Cursor = Cursors.Hand,
                         Dock = DockStyle.Top,
                         SizeMode = PictureBoxSizeMode.Zoom,
+                        Margin = new Padding(2), // kod okvira
                     };
                     pic.Click += Pic_Click;
-                    var clh = (this.Width - 4) * pic.Image.Height / pic.Image.Width;
+                    var clh = (this.Width - 8) * pic.Image.Height / pic.Image.Width;
+                    // -8 umesto -4 kod okvira
                     pic.Height = clh + 2;
                     Controls.Add(pic);
 
-                    if (ImagePreviewOptions.MultiCamSelected)
+                    if (UcSnapShotPanel.MultiCamSelected)
                         Controls.Add(new Label
                         {
                             Text = imgf.DateDir.Camera.DeviceName,
@@ -50,12 +52,12 @@ namespace SurveillanceCamWinApp.F.ImagePreview
                 }
 
                 dateTime = imageFiles.First().DateTime;
-                var fmt = dateTime.Second == 0 ? Classes.Utils.VremeKrupnoFormat : Classes.Utils.VremeFormat;
+                var fmt = dateTime.Second == 0 ? Utils.VremeKrupnoFormat : Utils.VremeFormat;
                 lblTime.Text = dateTime.ToString(fmt);
                 lblTime.SendToBack();
 
                 // racunanje visine kontrole
-                this.Height = Controls[0].Top + Controls[0].Height + 1;
+                this.Height = Controls[0].Top + Controls[0].Height + 1 + 3; // +3 dodato kod okvira
             }
             else // nema slika - ovo ne bi ni trebalo da se desava
             {
@@ -71,7 +73,7 @@ namespace SurveillanceCamWinApp.F.ImagePreview
                 var pic = sender as PictureBox;
                 System.Diagnostics.Process.Start(pic.ImageLocation);
             }
-            catch (Exception ex) { Classes.Logger.AddToLog(ex); }
+            catch (Exception ex) { Logger.AddToLog(ex); }
         }
     }
 }

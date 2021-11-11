@@ -19,6 +19,28 @@ namespace SurveillanceCamWinApp.F.ImagePreview
             InitializeComponent();
         }
 
+        private bool thumbnailBorders;
+        /// <summary>Imaju li UcSnapShot kontrole okvire.</summary>
+        public bool ThumbnailBorders
+        {
+            get { return thumbnailBorders; }
+            set
+            {
+                if (thumbnailBorders != value)
+                {
+                    thumbnailBorders = value;
+                    foreach (var uc in SnapShots)
+                        uc.BorderStyle = value ? BorderStyle.FixedSingle : BorderStyle.None;
+                }
+            }
+        }
+
+        /// <summary>Sve UcSnapShot kontrole na ovom panelu.</summary>
+        private IEnumerable<UcSnapShot> SnapShots => Controls.OfType<UcSnapShot>();
+
+        /// <summary>Da li je vise od jedne kamere selektovano.</summary>
+        public static bool MultiCamSelected { get; set; }
+
         /// <summary>Postavljanje slika na panel koriscenjem UcSnapShot kontrola.</summary>
         public void SetImages(Dictionary<string, List<ImageFile>> ifs)
         {

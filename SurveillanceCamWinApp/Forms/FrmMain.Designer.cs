@@ -29,17 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.Label label1;
             System.Windows.Forms.Label label2;
             System.Windows.Forms.ToolStripStatusLabel lblStatusCaption;
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnTest = new System.Windows.Forms.Button();
-            this.btnImagesFolderBrowse = new System.Windows.Forms.Button();
-            this.txtRootImageFolder = new System.Windows.Forms.TextBox();
-            this.btnRootImageFolderGoTo = new System.Windows.Forms.Button();
             this.btnNewCamera = new System.Windows.Forms.Button();
             this.btnDelCamera = new System.Windows.Forms.Button();
             this.dgvCameras = new System.Windows.Forms.DataGridView();
@@ -70,9 +66,20 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.btnStatusesAll = new System.Windows.Forms.ToolStripSplitButton();
             this.lblStatus = new SurveillanceCamWinApp.Controls.UcStatusLabel();
-            this.ucTimeInterval = new SurveillanceCamWinApp.F.ImagePreview.UcTimeInterval();
             this.pnlSnapShots = new SurveillanceCamWinApp.F.ImagePreview.UcSnapShotPanel();
-            label1 = new System.Windows.Forms.Label();
+            this.ucTimeInterval = new SurveillanceCamWinApp.F.ImagePreview.UcTimeInterval();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.rootImageFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRootFolderSet = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRootFolderOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFlowDirection = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFlowLeftRight = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFlowTopBottom = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiWrapThumbnails = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiThumbnailBorders = new System.Windows.Forms.ToolStripMenuItem();
             label2 = new System.Windows.Forms.Label();
             lblStatusCaption = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCameras)).BeginInit();
@@ -80,25 +87,20 @@
             this.ctxMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvImages)).BeginInit();
             this.statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            label1.Location = new System.Drawing.Point(510, 9);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(159, 20);
-            label1.TabIndex = 3;
-            label1.Text = "Root Image Folder";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            label2.Location = new System.Drawing.Point(12, 9);
+            label2.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            label2.Location = new System.Drawing.Point(10, 5);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(80, 20);
+            label2.Size = new System.Drawing.Size(86, 25);
             label2.TabIndex = 9;
             label2.Text = "Cameras";
             // 
@@ -110,47 +112,19 @@
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(510, 60);
+            this.btnTest.Location = new System.Drawing.Point(3, 37);
             this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(91, 34);
+            this.btnTest.Size = new System.Drawing.Size(80, 36);
             this.btnTest.TabIndex = 0;
             this.btnTest.Text = "Test";
             this.btnTest.UseVisualStyleBackColor = true;
             this.btnTest.Click += new System.EventHandler(this.BtnTest_Click);
             // 
-            // btnImagesFolderBrowse
-            // 
-            this.btnImagesFolderBrowse.Location = new System.Drawing.Point(888, 31);
-            this.btnImagesFolderBrowse.Name = "btnImagesFolderBrowse";
-            this.btnImagesFolderBrowse.Size = new System.Drawing.Size(75, 25);
-            this.btnImagesFolderBrowse.TabIndex = 1;
-            this.btnImagesFolderBrowse.Text = "Browse...";
-            this.btnImagesFolderBrowse.UseVisualStyleBackColor = true;
-            this.btnImagesFolderBrowse.Click += new System.EventHandler(this.BtnImagesFolderBrowse_Click);
-            // 
-            // txtRootImageFolder
-            // 
-            this.txtRootImageFolder.Location = new System.Drawing.Point(510, 32);
-            this.txtRootImageFolder.Name = "txtRootImageFolder";
-            this.txtRootImageFolder.ReadOnly = true;
-            this.txtRootImageFolder.Size = new System.Drawing.Size(372, 22);
-            this.txtRootImageFolder.TabIndex = 2;
-            // 
-            // btnRootImageFolderGoTo
-            // 
-            this.btnRootImageFolderGoTo.Location = new System.Drawing.Point(969, 32);
-            this.btnRootImageFolderGoTo.Name = "btnRootImageFolderGoTo";
-            this.btnRootImageFolderGoTo.Size = new System.Drawing.Size(75, 25);
-            this.btnRootImageFolderGoTo.TabIndex = 4;
-            this.btnRootImageFolderGoTo.Text = "Go To";
-            this.btnRootImageFolderGoTo.UseVisualStyleBackColor = true;
-            this.btnRootImageFolderGoTo.Click += new System.EventHandler(this.BtnRootImageFolderGoTo_Click);
-            // 
             // btnNewCamera
             // 
-            this.btnNewCamera.Location = new System.Drawing.Point(12, 186);
+            this.btnNewCamera.Location = new System.Drawing.Point(10, 154);
             this.btnNewCamera.Name = "btnNewCamera";
-            this.btnNewCamera.Size = new System.Drawing.Size(75, 25);
+            this.btnNewCamera.Size = new System.Drawing.Size(66, 27);
             this.btnNewCamera.TabIndex = 5;
             this.btnNewCamera.Text = "New...";
             this.btnNewCamera.UseVisualStyleBackColor = true;
@@ -158,9 +132,9 @@
             // 
             // btnDelCamera
             // 
-            this.btnDelCamera.Location = new System.Drawing.Point(93, 186);
+            this.btnDelCamera.Location = new System.Drawing.Point(81, 154);
             this.btnDelCamera.Name = "btnDelCamera";
-            this.btnDelCamera.Size = new System.Drawing.Size(75, 25);
+            this.btnDelCamera.Size = new System.Drawing.Size(66, 27);
             this.btnDelCamera.TabIndex = 7;
             this.btnDelCamera.Text = "Delete";
             this.btnDelCamera.UseVisualStyleBackColor = true;
@@ -170,18 +144,20 @@
             // 
             this.dgvCameras.AllowUserToAddRows = false;
             this.dgvCameras.AllowUserToDeleteRows = false;
+            this.dgvCameras.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCameras.BackgroundColor = System.Drawing.Color.White;
             this.dgvCameras.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCameras.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgvcCamDeviceName,
             this.dgvcCamIpAddress,
             this.dgvcCamLastImageDlStr});
-            this.dgvCameras.Location = new System.Drawing.Point(12, 32);
+            this.dgvCameras.Location = new System.Drawing.Point(10, 33);
             this.dgvCameras.Name = "dgvCameras";
             this.dgvCameras.ReadOnly = true;
             this.dgvCameras.RowHeadersWidth = 22;
             this.dgvCameras.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCameras.Size = new System.Drawing.Size(443, 150);
+            this.dgvCameras.Size = new System.Drawing.Size(411, 115);
             this.dgvCameras.TabIndex = 8;
             this.dgvCameras.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvCameras_CellDoubleClick);
             this.dgvCameras.SelectionChanged += new System.EventHandler(this.DgvCameras_SelectionChanged);
@@ -212,9 +188,10 @@
             // 
             // btnGetDirs
             // 
-            this.btnGetDirs.Location = new System.Drawing.Point(371, 186);
+            this.btnGetDirs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetDirs.Location = new System.Drawing.Point(347, 154);
             this.btnGetDirs.Name = "btnGetDirs";
-            this.btnGetDirs.Size = new System.Drawing.Size(84, 25);
+            this.btnGetDirs.Size = new System.Drawing.Size(74, 27);
             this.btnGetDirs.TabIndex = 12;
             this.btnGetDirs.Text = "Get Dates";
             this.btnGetDirs.UseVisualStyleBackColor = true;
@@ -222,9 +199,10 @@
             // 
             // btnGetImageFiles
             // 
-            this.btnGetImageFiles.Location = new System.Drawing.Point(364, 440);
+            this.btnGetImageFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetImageFiles.Location = new System.Drawing.Point(341, 385);
             this.btnGetImageFiles.Name = "btnGetImageFiles";
-            this.btnGetImageFiles.Size = new System.Drawing.Size(91, 25);
+            this.btnGetImageFiles.Size = new System.Drawing.Size(80, 27);
             this.btnGetImageFiles.TabIndex = 13;
             this.btnGetImageFiles.Text = "Get Images";
             this.btnGetImageFiles.UseVisualStyleBackColor = true;
@@ -234,6 +212,8 @@
             // 
             this.dgvDateDirs.AllowUserToAddRows = false;
             this.dgvDateDirs.AllowUserToDeleteRows = false;
+            this.dgvDateDirs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDateDirs.BackgroundColor = System.Drawing.Color.White;
             this.dgvDateDirs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDateDirs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -242,12 +222,12 @@
             this.dgvcDateDirImgLocal,
             this.dgvcDateDirsDL});
             this.dgvDateDirs.ContextMenuStrip = this.ctxMenu;
-            this.dgvDateDirs.Location = new System.Drawing.Point(12, 254);
+            this.dgvDateDirs.Location = new System.Drawing.Point(11, 220);
             this.dgvDateDirs.Name = "dgvDateDirs";
             this.dgvDateDirs.ReadOnly = true;
             this.dgvDateDirs.RowHeadersWidth = 22;
             this.dgvDateDirs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvDateDirs.Size = new System.Drawing.Size(443, 180);
+            this.dgvDateDirs.Size = new System.Drawing.Size(410, 159);
             this.dgvDateDirs.TabIndex = 14;
             this.dgvDateDirs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDateDirs_CellClick);
             this.dgvDateDirs.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDateDirs_CellDoubleClick);
@@ -269,38 +249,38 @@
             // 
             this.dgvcDateDirImgSDC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.dgvcDateDirImgSDC.DataPropertyName = "ImgCountSDC";
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle21.NullValue = "?";
-            this.dgvcDateDirImgSDC.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle41.NullValue = "?";
+            this.dgvcDateDirImgSDC.DefaultCellStyle = dataGridViewCellStyle41;
             this.dgvcDateDirImgSDC.HeaderText = "CAM";
             this.dgvcDateDirImgSDC.Name = "dgvcDateDirImgSDC";
             this.dgvcDateDirImgSDC.ReadOnly = true;
             this.dgvcDateDirImgSDC.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvcDateDirImgSDC.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dgvcDateDirImgSDC.ToolTipText = "Number of images on ESP32CAM";
-            this.dgvcDateDirImgSDC.Width = 43;
+            this.dgvcDateDirImgSDC.Width = 42;
             // 
             // dgvcDateDirImgLocal
             // 
             this.dgvcDateDirImgLocal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.dgvcDateDirImgLocal.DataPropertyName = "ImgCountLocal";
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle22.NullValue = "?";
-            this.dgvcDateDirImgLocal.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle42.NullValue = "?";
+            this.dgvcDateDirImgLocal.DefaultCellStyle = dataGridViewCellStyle42;
             this.dgvcDateDirImgLocal.HeaderText = "Local";
             this.dgvcDateDirImgLocal.Name = "dgvcDateDirImgLocal";
             this.dgvcDateDirImgLocal.ReadOnly = true;
             this.dgvcDateDirImgLocal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvcDateDirImgLocal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dgvcDateDirImgLocal.ToolTipText = "Number of images on local drive";
-            this.dgvcDateDirImgLocal.Width = 47;
+            this.dgvcDateDirImgLocal.Width = 44;
             // 
             // dgvcDateDirsDL
             // 
             this.dgvcDateDirsDL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle23.NullValue = "ↆ";
-            this.dgvcDateDirsDL.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle43.NullValue = "ↆ";
+            this.dgvcDateDirsDL.DefaultCellStyle = dataGridViewCellStyle43;
             this.dgvcDateDirsDL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dgvcDateDirsDL.HeaderText = "DL";
             this.dgvcDateDirsDL.Name = "dgvcDateDirsDL";
@@ -308,7 +288,7 @@
             this.dgvcDateDirsDL.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvcDateDirsDL.Text = "";
             this.dgvcDateDirsDL.ToolTipText = "Download all images for the date";
-            this.dgvcDateDirsDL.Width = 31;
+            this.dgvcDateDirsDL.Width = 29;
             // 
             // ctxMenu
             // 
@@ -344,20 +324,20 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(14, 231);
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(12, 194);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 20);
+            this.label3.Size = new System.Drawing.Size(61, 25);
             this.label3.TabIndex = 9;
             this.label3.Text = "Dates";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(14, 466);
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(12, 416);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(68, 20);
+            this.label4.Size = new System.Drawing.Size(74, 25);
             this.label4.TabIndex = 9;
             this.label4.Text = "Images";
             // 
@@ -365,8 +345,9 @@
             // 
             this.dgvImages.AllowUserToAddRows = false;
             this.dgvImages.AllowUserToDeleteRows = false;
-            this.dgvImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dgvImages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvImages.BackgroundColor = System.Drawing.Color.White;
             this.dgvImages.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvImages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -375,11 +356,11 @@
             this.dgvcImagesExistsLocally,
             this.dgvcImagesDL});
             this.dgvImages.ContextMenuStrip = this.ctxMenu;
-            this.dgvImages.Location = new System.Drawing.Point(12, 489);
+            this.dgvImages.Location = new System.Drawing.Point(10, 444);
             this.dgvImages.Name = "dgvImages";
             this.dgvImages.ReadOnly = true;
             this.dgvImages.RowHeadersWidth = 22;
-            this.dgvImages.Size = new System.Drawing.Size(443, 159);
+            this.dgvImages.Size = new System.Drawing.Size(411, 203);
             this.dgvImages.TabIndex = 15;
             this.dgvImages.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvImages_CellClick);
             this.dgvImages.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvImages_CellDoubleClick);
@@ -406,7 +387,7 @@
             this.dgvcImagesExistsOnSDC.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvcImagesExistsOnSDC.ToolTipText = "Exists on ESP32CAM";
             this.dgvcImagesExistsOnSDC.TrueValue = "true";
-            this.dgvcImagesExistsOnSDC.Width = 43;
+            this.dgvcImagesExistsOnSDC.Width = 42;
             // 
             // dgvcImagesExistsLocally
             // 
@@ -417,37 +398,37 @@
             this.dgvcImagesExistsLocally.ReadOnly = true;
             this.dgvcImagesExistsLocally.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvcImagesExistsLocally.ToolTipText = "Exists locally";
-            this.dgvcImagesExistsLocally.Width = 47;
+            this.dgvcImagesExistsLocally.Width = 44;
             // 
             // dgvcImagesDL
             // 
             this.dgvcImagesDL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle24.NullValue = "ↆ";
-            this.dgvcImagesDL.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle44.NullValue = "ↆ";
+            this.dgvcImagesDL.DefaultCellStyle = dataGridViewCellStyle44;
             this.dgvcImagesDL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.dgvcImagesDL.HeaderText = "DL";
             this.dgvcImagesDL.Name = "dgvcImagesDL";
             this.dgvcImagesDL.ReadOnly = true;
             this.dgvcImagesDL.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvcImagesDL.ToolTipText = "Download image";
-            this.dgvcImagesDL.Width = 31;
+            this.dgvcImagesDL.Width = 29;
             // 
             // lblDownloader
             // 
             this.lblDownloader.AutoSize = true;
-            this.lblDownloader.Location = new System.Drawing.Point(643, 69);
+            this.lblDownloader.Location = new System.Drawing.Point(4, 85);
             this.lblDownloader.Name = "lblDownloader";
-            this.lblDownloader.Size = new System.Drawing.Size(81, 16);
+            this.lblDownloader.Size = new System.Drawing.Size(79, 17);
             this.lblDownloader.TabIndex = 17;
             this.lblDownloader.Text = "Downloader";
             // 
             // lblDatesRowCount
             // 
             this.lblDatesRowCount.AutoSize = true;
-            this.lblDatesRowCount.Location = new System.Drawing.Point(9, 440);
+            this.lblDatesRowCount.Location = new System.Drawing.Point(8, 385);
             this.lblDatesRowCount.Name = "lblDatesRowCount";
-            this.lblDatesRowCount.Size = new System.Drawing.Size(91, 16);
+            this.lblDatesRowCount.Size = new System.Drawing.Size(91, 17);
             this.lblDatesRowCount.TabIndex = 18;
             this.lblDatesRowCount.Text = "Dates Count: /";
             // 
@@ -455,9 +436,9 @@
             // 
             this.lblImagesRowCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblImagesRowCount.AutoSize = true;
-            this.lblImagesRowCount.Location = new System.Drawing.Point(13, 651);
+            this.lblImagesRowCount.Location = new System.Drawing.Point(11, 650);
             this.lblImagesRowCount.Name = "lblImagesRowCount";
-            this.lblImagesRowCount.Size = new System.Drawing.Size(100, 16);
+            this.lblImagesRowCount.Size = new System.Drawing.Size(100, 17);
             this.lblImagesRowCount.TabIndex = 19;
             this.lblImagesRowCount.Text = "Images Count: /";
             // 
@@ -467,9 +448,10 @@
             this.btnStatusesAll,
             lblStatusCaption,
             this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 676);
+            this.statusStrip.Location = new System.Drawing.Point(0, 674);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1139, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
+            this.statusStrip.Size = new System.Drawing.Size(1074, 22);
             this.statusStrip.TabIndex = 22;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -494,55 +476,165 @@
             this.lblStatus.Size = new System.Drawing.Size(12, 17);
             this.lblStatus.Text = "/";
             // 
-            // ucTimeInterval
-            // 
-            this.ucTimeInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucTimeInterval.Location = new System.Drawing.Point(483, 154);
-            this.ucTimeInterval.Margin = new System.Windows.Forms.Padding(4);
-            this.ucTimeInterval.Name = "ucTimeInterval";
-            this.ucTimeInterval.Size = new System.Drawing.Size(534, 28);
-            this.ucTimeInterval.TabIndex = 20;
-            this.ucTimeInterval.IntervalChanged += new System.EventHandler(this.UcTimeInterval_IntervalChanged);
-            // 
             // pnlSnapShots
             // 
             this.pnlSnapShots.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlSnapShots.AutoScroll = true;
             this.pnlSnapShots.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlSnapShots.Location = new System.Drawing.Point(483, 189);
+            this.pnlSnapShots.Location = new System.Drawing.Point(3, 191);
             this.pnlSnapShots.Name = "pnlSnapShots";
-            this.pnlSnapShots.Size = new System.Drawing.Size(644, 478);
+            this.pnlSnapShots.Size = new System.Drawing.Size(638, 476);
             this.pnlSnapShots.TabIndex = 23;
+            this.pnlSnapShots.ThumbnailBorders = false;
+            // 
+            // ucTimeInterval
+            // 
+            this.ucTimeInterval.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucTimeInterval.Location = new System.Drawing.Point(1, 154);
+            this.ucTimeInterval.Margin = new System.Windows.Forms.Padding(4);
+            this.ucTimeInterval.Name = "ucTimeInterval";
+            this.ucTimeInterval.Size = new System.Drawing.Size(467, 30);
+            this.ucTimeInterval.TabIndex = 20;
+            this.ucTimeInterval.IntervalChanged += new System.EventHandler(this.UcTimeInterval_IntervalChanged);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.dgvDateDirs);
+            this.splitContainer1.Panel1.Controls.Add(this.btnNewCamera);
+            this.splitContainer1.Panel1.Controls.Add(this.btnDelCamera);
+            this.splitContainer1.Panel1.Controls.Add(this.dgvCameras);
+            this.splitContainer1.Panel1.Controls.Add(label2);
+            this.splitContainer1.Panel1.Controls.Add(this.lblImagesRowCount);
+            this.splitContainer1.Panel1.Controls.Add(this.label3);
+            this.splitContainer1.Panel1.Controls.Add(this.lblDatesRowCount);
+            this.splitContainer1.Panel1.Controls.Add(this.label4);
+            this.splitContainer1.Panel1.Controls.Add(this.btnGetDirs);
+            this.splitContainer1.Panel1.Controls.Add(this.dgvImages);
+            this.splitContainer1.Panel1.Controls.Add(this.btnGetImageFiles);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnTest);
+            this.splitContainer1.Panel2.Controls.Add(this.pnlSnapShots);
+            this.splitContainer1.Panel2.Controls.Add(this.ucTimeInterval);
+            this.splitContainer1.Panel2.Controls.Add(this.lblDownloader);
+            this.splitContainer1.Panel2.Controls.Add(this.menuStrip);
+            this.splitContainer1.Size = new System.Drawing.Size(1074, 674);
+            this.splitContainer1.SplitterDistance = 427;
+            this.splitContainer1.TabIndex = 24;
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFile,
+            this.tsmiOptions});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(643, 28);
+            this.menuStrip.TabIndex = 24;
+            this.menuStrip.Text = "menuStrip1";
+            // 
+            // tsmiFile
+            // 
+            this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rootImageFolderToolStripMenuItem});
+            this.tsmiFile.Name = "tsmiFile";
+            this.tsmiFile.Size = new System.Drawing.Size(44, 24);
+            this.tsmiFile.Text = "File";
+            // 
+            // rootImageFolderToolStripMenuItem
+            // 
+            this.rootImageFolderToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRootFolderSet,
+            this.tsmiRootFolderOpen});
+            this.rootImageFolderToolStripMenuItem.Name = "rootImageFolderToolStripMenuItem";
+            this.rootImageFolderToolStripMenuItem.Size = new System.Drawing.Size(202, 24);
+            this.rootImageFolderToolStripMenuItem.Text = "Root Image Folder";
+            // 
+            // tsmiRootFolderSet
+            // 
+            this.tsmiRootFolderSet.Name = "tsmiRootFolderSet";
+            this.tsmiRootFolderSet.Size = new System.Drawing.Size(169, 24);
+            this.tsmiRootFolderSet.Text = "Set Location...";
+            this.tsmiRootFolderSet.Click += new System.EventHandler(this.TsmiRootFolderSet_Click);
+            // 
+            // tsmiRootFolderOpen
+            // 
+            this.tsmiRootFolderOpen.Name = "tsmiRootFolderOpen";
+            this.tsmiRootFolderOpen.Size = new System.Drawing.Size(169, 24);
+            this.tsmiRootFolderOpen.Text = "Open...";
+            this.tsmiRootFolderOpen.Click += new System.EventHandler(this.TsmiRootFolderOpen_Click);
+            // 
+            // tsmiOptions
+            // 
+            this.tsmiOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFlowDirection,
+            this.tsmiWrapThumbnails,
+            this.tsmiThumbnailBorders});
+            this.tsmiOptions.Name = "tsmiOptions";
+            this.tsmiOptions.Size = new System.Drawing.Size(73, 24);
+            this.tsmiOptions.Text = "Options";
+            // 
+            // tsmiFlowDirection
+            // 
+            this.tsmiFlowDirection.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFlowLeftRight,
+            this.tsmiFlowTopBottom});
+            this.tsmiFlowDirection.Name = "tsmiFlowDirection";
+            this.tsmiFlowDirection.Size = new System.Drawing.Size(203, 24);
+            this.tsmiFlowDirection.Text = "Flow Direction";
+            // 
+            // tsmiFlowLeftRight
+            // 
+            this.tsmiFlowLeftRight.Name = "tsmiFlowLeftRight";
+            this.tsmiFlowLeftRight.Size = new System.Drawing.Size(175, 24);
+            this.tsmiFlowLeftRight.Text = "Left to Right";
+            this.tsmiFlowLeftRight.Click += new System.EventHandler(this.TsmiFlowLeftRight_Click);
+            // 
+            // tsmiFlowTopBottom
+            // 
+            this.tsmiFlowTopBottom.Name = "tsmiFlowTopBottom";
+            this.tsmiFlowTopBottom.Size = new System.Drawing.Size(175, 24);
+            this.tsmiFlowTopBottom.Text = "Top to Bottom";
+            this.tsmiFlowTopBottom.Click += new System.EventHandler(this.TsmiFlowTopBottom_Click);
+            // 
+            // tsmiWrapThumbnails
+            // 
+            this.tsmiWrapThumbnails.CheckOnClick = true;
+            this.tsmiWrapThumbnails.Name = "tsmiWrapThumbnails";
+            this.tsmiWrapThumbnails.Size = new System.Drawing.Size(203, 24);
+            this.tsmiWrapThumbnails.Text = "Wrap Thumbnails";
+            this.tsmiWrapThumbnails.CheckedChanged += new System.EventHandler(this.TsmiWrapThumbnails_CheckedChanged);
+            // 
+            // tsmiThumbnailBorders
+            // 
+            this.tsmiThumbnailBorders.CheckOnClick = true;
+            this.tsmiThumbnailBorders.Name = "tsmiThumbnailBorders";
+            this.tsmiThumbnailBorders.Size = new System.Drawing.Size(203, 24);
+            this.tsmiThumbnailBorders.Text = "Thumbnail Borders";
+            this.tsmiThumbnailBorders.CheckedChanged += new System.EventHandler(this.TsmiThumbnailBorders_CheckedChanged);
             // 
             // FrmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1139, 698);
-            this.Controls.Add(this.pnlSnapShots);
+            this.ClientSize = new System.Drawing.Size(1074, 696);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.ucTimeInterval);
-            this.Controls.Add(this.lblImagesRowCount);
-            this.Controls.Add(this.lblDatesRowCount);
-            this.Controls.Add(this.lblDownloader);
-            this.Controls.Add(this.dgvImages);
-            this.Controls.Add(this.dgvDateDirs);
-            this.Controls.Add(this.btnGetImageFiles);
-            this.Controls.Add(this.btnGetDirs);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(label2);
-            this.Controls.Add(this.dgvCameras);
-            this.Controls.Add(this.btnDelCamera);
-            this.Controls.Add(this.btnNewCamera);
-            this.Controls.Add(this.btnRootImageFolderGoTo);
-            this.Controls.Add(label1);
-            this.Controls.Add(this.txtRootImageFolder);
-            this.Controls.Add(this.btnImagesFolderBrowse);
-            this.Controls.Add(this.btnTest);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = global::SurveillanceCamWinApp.Properties.Resources.webcam;
+            this.MainMenuStrip = this.menuStrip;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -555,6 +647,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvImages)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -563,9 +663,6 @@
         #endregion
 
         private System.Windows.Forms.Button btnTest;
-        private System.Windows.Forms.Button btnImagesFolderBrowse;
-        private System.Windows.Forms.TextBox txtRootImageFolder;
-        private System.Windows.Forms.Button btnRootImageFolderGoTo;
         private System.Windows.Forms.Button btnNewCamera;
         private System.Windows.Forms.Button btnDelCamera;
         private System.Windows.Forms.DataGridView dgvCameras;
@@ -598,6 +695,18 @@
         private Controls.UcStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripSplitButton btnStatusesAll;
         private F.ImagePreview.UcSnapShotPanel pnlSnapShots;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFile;
+        private System.Windows.Forms.ToolStripMenuItem rootImageFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRootFolderSet;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRootFolderOpen;
+        private System.Windows.Forms.ToolStripMenuItem tsmiOptions;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFlowDirection;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFlowLeftRight;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFlowTopBottom;
+        private System.Windows.Forms.ToolStripMenuItem tsmiWrapThumbnails;
+        private System.Windows.Forms.ToolStripMenuItem tsmiThumbnailBorders;
     }
 }
 

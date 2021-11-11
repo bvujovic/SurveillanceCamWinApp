@@ -1,13 +1,20 @@
 - UcSnapShot
 	- dodati mogucnost da se u UcSnapShot prikazu i sike koje nisu skinute na HD u vidu neke standradne
 		slike sa porukom "on cam" ili "download from cam" na koju se moze kliknuti za DL
-- Opcije za prikaz slika (mozda opcije pridruziti UcSnapShotPanel-u; promena opcije -> dogadjaj i reakcija):
-	- sa/bez okvira oko UcSS (dodati i mali padding/margine oko slika)
-	- sa/bez WrapContents-a za panel
-	- FlowDirection: left->right, top->bottom za panel
-- Efikasniji prikaz slika
-	- ne brisati sve kontrole, vec samo visak (ako ga ima) ili samo dodati nove
-	- ucitati samo vidljive slike i mozda (ako je komp idle) [u pozadini] ucitati jos slika
+- UcTimeInterval
+	- Zadavanje mini intervala (npr 5, 10, 30min) -> slike se prikazuju ako su na tom ili vecem rastojanju
+- UcSnapShotPanel
+	- Ne prikazuju se slike iz drugog dana kada UcTimeInterval to zahteva
+	- Opcije za prikaz slika (mozda opcije pridruziti UcSnapShotPanel-u
+		- sa/bez slika koje nisu DL-ovane
+		+ sa/bez okvira oko UcSS (dodati i mali padding/margine oko slika)
+		+ sa/bez WrapContents-a za panel
+		+ FlowDirection: left->right, top->bottom za panel
+		+ brisanje ImagePreviewOptions klase
+		- Save&Load opcija
+	- Efikasniji prikaz slika
+		- ne brisati sve kontrole, vec samo visak (ako ga ima) ili samo dodati nove
+		- ucitati samo vidljive slike i mozda (ako je komp idle) [u pozadini] ucitati jos slika
 - DateDir klasa. Odluciti kako se tacno izracunava broj lokalnih slika: broj fajlova u folderu ili 
 ImageFiles.Count(it => it.ExistsLocally). Pogledati kako je uradjeno svojstvo ImgCountSDC.
 ? keepAlive: svakih npr. 90sec cimnuti kameru tako da ne ode na sleep. check box

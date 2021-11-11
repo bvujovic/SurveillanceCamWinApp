@@ -14,7 +14,6 @@ namespace SurveillanceCamWinApp.Data.Models
         [Key]
         public int IdCam { get; set; }
 
-        //B public string DeviceName { get; set; }
         private string deviceName;
         /// <summary>Naziv kamere.</summary>
         [Required]
@@ -25,13 +24,15 @@ namespace SurveillanceCamWinApp.Data.Models
             {
                 if (deviceName == value)
                     return;
-                var currPath = Path.Combine(Classes.AppData.RootImageFolder, deviceName);
-                if (Directory.Exists(currPath))
+                var newPath = Path.Combine(Classes.AppData.RootImageFolder, value);
+                if (Directory.Exists(newPath))
+                    throw new Exception($"Directory '{newPath}' already exists.");
+
+                if (deviceName != null)
                 {
-                    var newPath = Path.Combine(Classes.AppData.RootImageFolder, value);
-                    if (Directory.Exists(newPath))
-                        throw new Exception($"Directory '{newPath}' already exists.");
-                    Directory.Move(currPath, newPath);
+                    var currPath = Path.Combine(Classes.AppData.RootImageFolder, deviceName);
+                    if (Directory.Exists(currPath))
+                        Directory.Move(currPath, newPath);
                 }
                 deviceName = value;
             }

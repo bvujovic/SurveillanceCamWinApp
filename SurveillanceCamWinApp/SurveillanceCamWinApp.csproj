@@ -201,7 +201,6 @@
       <DependentUpon>20210904013147_Init2.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\Migrations\DbCtxModelSnapshot.cs" />
-    <Compile Include="F\ImagePreview\ImagePreviewOptions.cs" />
     <Compile Include="F\ImagePreview\UcSnapShot.cs">
       <SubType>UserControl</SubType>
     </Compile>
